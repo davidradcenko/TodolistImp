@@ -22,12 +22,12 @@ function App() {
     }
 
 
-    let filtrData=TodolistData
-    if (Filter == "Completed"){
-        filtrData= TodolistData.filter(e=> e.checked == false)
+    let filtrData = TodolistData
+    if (Filter == "Completed") {
+        filtrData = TodolistData.filter(e => e.checked == false)
     }
-    if (Filter == "Active"){
-        filtrData= TodolistData.filter(e=> e.checked == true)
+    if (Filter == "Active") {
+        filtrData = TodolistData.filter(e => e.checked == true)
     }
 
     return (
