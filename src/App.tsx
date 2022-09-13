@@ -1,41 +1,40 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {TaskType, Todolists} from "./Todolists";
 
+export type FilterType = "All" | "Completed" | "Active";
 
 function App() {
-    const mas1 = [
-        {id: 1, name: "Pet", checked: false, nameCheckbox: [{id:1,namePet:"cat"},{id:2,namePet:"Dog"}]}
-    ]
+    let [TodolistData, SetTodolistData] = useState<Array<TaskType>>([
+        {id: 1, name: "Pets", checked: false},
+        {id: 2, name: "Dog", checked: true},
+        {id: 3, name: "Cat", checked: false},
+        {id: 4, name: "Bags", checked: true}
+    ])
+    let [Filter, setFilter] = useState<FilterType>("All")
+
+    function removeTask(id: number) {
+        let task = TodolistData.filter(e => id != e.id)
+        SetTodolistData(task)
+    }
+
+    function chengeFilter(value: FilterType) {
+        setFilter(value)
+    }
 
 
+    let filtrData=TodolistData
+    if (Filter == "Completed"){
+        filtrData= TodolistData.filter(e=> e.checked == false)
+    }
+    if (Filter == "Active"){
+        filtrData= TodolistData.filter(e=> e.checked == true)
+    }
 
-return (
-    <div className="App">
-        <Todolists mass={mas1}/>
-    </div>
-);
-}
-type nameChecboxType={
-    id:number,namePet:string
-}
-type Mas1Type={
-    id: number, name: string, checked: boolean, nameCheckbox: Array<nameChecboxType>
-}
-type propsType={
-    mass:Array<Mas1Type>
-}
-function Todolists(props:propsType) {
     return (
-        <>
-            <div>
-                <h1>{props.mass[0].name}:</h1>
-                <ul>
-                    <li><input checked={props.mass[0].checked} type="checkbox"/><span>{props.mass[0].nameCheckbox[0].namePet}</span></li>
-                    <li><input checked={props.mass[0].checked} type="checkbox"/><span>{props.mass[0].nameCheckbox[1].namePet}</span></li>
-
-                </ul>
-            </div>
-        </>
-    )
+        <div className="App">
+            <Todolists tasks={filtrData} removeTask={removeTask} chengeFilter={chengeFilter}/>
+        </div>
+    );
 }
 
 
