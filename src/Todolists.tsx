@@ -12,6 +12,7 @@ export  type PropsType = {
     tasks: Array<TaskType>,
     removeTask: (id: number) => void,
     chengeFilter: (param: FilterType) => void
+    chengeChecked:(id:number)=> void
 }
 
 export function Todolists(props: PropsType) {
@@ -22,7 +23,7 @@ export function Todolists(props: PropsType) {
                 <ul>
                     {
                         props.tasks.map(e => <li key={e.id}>
-                                <input checked={e.checked} type="checkbox"/><span>{e.name}</span>
+                                <input checked={e.checked} onClick={()=>props.chengeChecked(e.id)}  type="checkbox"/><span>{e.name}</span>
                                 <button onClick={() => props.removeTask(e.id)} type="button" value={"Delete"}/>
                             </li>
                         )

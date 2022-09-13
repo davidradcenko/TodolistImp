@@ -17,6 +17,16 @@ function App() {
         SetTodolistData(task)
     }
 
+    function chengeChecked(id: number) {
+        let afterChecked = TodolistData.find(e => {
+            if (e.id == id) {
+
+            }
+        })
+
+        console.log(afterChecked)
+    }
+
     function chengeFilter(value: FilterType) {
         setFilter(value)
     }
@@ -32,7 +42,8 @@ function App() {
 
     return (
         <div className="App">
-            <Todolists tasks={filtrData} removeTask={removeTask} chengeFilter={chengeFilter}/>
+            <Todolists tasks={filtrData} removeTask={removeTask} chengeFilter={chengeFilter}
+                       chengeChecked={chengeChecked}/>
         </div>
     );
 }
