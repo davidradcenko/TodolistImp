@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {TaskType, Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
+import './App.css';
 
 export type FilterType = "All" | "Completed" | "Active";
 
@@ -31,11 +32,9 @@ function App() {
                 return e
             }
         })
-        console.log(newMass)
-        if (typeof newMass === "object") {
-            //TodolistData[newMass]
-            //SetTodolistData(newTaskCheked)
-        }
+       let soldeMass=[...TodolistData]
+            SetTodolistData(soldeMass)
+
 
     }
 
@@ -56,7 +55,8 @@ function App() {
         <div className="App">
             <Todolists tasks={filtrData}
                        removeTask={removeTask}
-                       chengeFilter={chengeFilter}
+                       FilterChenge={chengeFilter}
+                       FilterStatus={Filter}
                        chengeChecked={chengeChecked}
                        AddNewTodoTask={AddNewTodoTask}/>
         </div>

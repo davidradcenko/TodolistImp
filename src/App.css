@@ -1,0 +1,9 @@
+.Todolist-AddTasks-input{
+    border-color: crimson;
+}
+.Todolist-button-filter{
+    border-color: crimson;
+}
+.Todolist-TasksList-ChekedTrue{
+    opacity: 0.6;
+}
