@@ -15,7 +15,7 @@ export  type PropsType = {
     FilterChenge: (param: FilterType) => void
     chengeChecked: (id: string) => void,
     AddNewTodoTask: (title: string) => void
-    FilterStatus:FilterType
+    FilterStatus: FilterType
 }
 
 export function Todolists(props: PropsType) {
