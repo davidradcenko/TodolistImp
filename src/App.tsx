@@ -4,64 +4,98 @@ import {v1 as uuidv4} from 'uuid';
 import './App.css';
 
 export type FilterType = "All" | "Completed" | "Active";
+type TodolistType = {
+    id: string,
+    title: string,
+    isDone: FilterType
+}
+
 
 function App() {
-    let [TodolistData, SetTodolistData] = useState([
-        {id: uuidv4(), name : "Pets", checked: false},
-        {id: uuidv4(), name: "Dog", checked: true},
-        {id: uuidv4(), name: "Cat", checked: false},
-        {id: uuidv4(), name: "Bags", checked: true}
-    ])
-    let [Filter, setFilter] = useState<FilterType>("All")
 
-    function removeTask(id: string) {
-        let task = TodolistData.filter(e => id != e.id)
-        SetTodolistData(task)
+    function removeTask(id: string, todolistId: string) {
+        let T = tasksObj[todolistId]
+        let FiltredTask = T.filter(e => id != e.id)
+        tasksObj[todolistId] = FiltredTask
+        SetTasksObj({...tasksObj})
     }
 
-    function AddNewTodoTask(title: string) {
+    function AddNewTodoTask(title: string, todolistId: string) {
         let newTodo = {id: uuidv4(), name: title, checked: false}
-        let newTask = [newTodo, ...TodolistData]
-        SetTodolistData(newTask)
+        let T = tasksObj[todolistId]
+        let newTask = [newTodo, ...T]
+        tasksObj[todolistId] = newTask
+        SetTasksObj({...tasksObj})
     }
 
-    function chengeChecked(id: string) {
-        let newMass = TodolistData.find(e => {
-            if (e.id == id) {
-            e.checked= !e.checked
-                return e
-            }
-        })
-       let soldeMass=[...TodolistData]
-            SetTodolistData(soldeMass)
+    function chengeChecked(id: string, todolistId: string) {
+        let T = tasksObj[todolistId]
+        let newMass = T.filter(e => e.id == id)
+
+        if(newMass){
+            console.log(newMass)
+            tasksObj[0].checked = true
+            SetTasksObj({...tasksObj})
+        }
 
 
     }
 
-    function chengeFilter(value: FilterType) {
-        setFilter(value)
+    function chengeFilter(value: FilterType, todolistId: string) {
+        let todo = TodolistData.find(tl => tl.id === todolistId)
+        if (todo) {
+
+            todo.isDone = value
+            SetTodolistData({...TodolistData})
+        }
+
     }
 
+    let todolistId1 = uuidv4()
+    let todolistId2 = uuidv4()
 
-    let filtrData = TodolistData
-    if (Filter == "Completed") {
-        filtrData = TodolistData.filter(e => e.checked == false)
-    }
-    if (Filter == "Active") {
-        filtrData = TodolistData.filter(e => e.checked == true)
-    }
+    let [TodolistData, SetTodolistData] = useState<Array<TodolistType>>([
+        {id: todolistId1, title: "Books", isDone: "Completed"},
+        {id: todolistId2, title: "Pets", isDone: "Active"}
+    ])
+    let [tasksObj, SetTasksObj] = useState({
+        [todolistId1]: [
+            {id: uuidv4(), name: "Frog", checked: false},
+            {id: uuidv4(), name: "Dog", checked: true},
+            {id: uuidv4(), name: "Cat", checked: false},
+            {id: uuidv4(), name: "Bags", checked: true}
+        ],
+        [todolistId2]: [
+            {id: uuidv4(), name: "Leonardo", checked: true},
+            {id: uuidv4(), name: "7 age", checked: false}
+        ]
+
+    })
 
     return (
         <div className="App">
-            <Todolists tasks={filtrData}
-                       removeTask={removeTask}
-                       FilterChenge={chengeFilter}
-                       FilterStatus={Filter}
-                       chengeChecked={chengeChecked}
-                       AddNewTodoTask={AddNewTodoTask}/>
+            {TodolistData.map((tl) => {
+                let filtrData = tasksObj[tl.id]
+                if (tl.isDone == "Completed") {
+                    filtrData = filtrData.filter(e => e.checked == false)
+                }
+                if (tl.isDone == "Active") {
+                    filtrData = filtrData.filter(e => e.checked == true)
+                }
+                return (<Todolists
+                    key={tl.id}
+                    id={tl.id}
+                    tasks={filtrData}
+                    removeTask={removeTask}
+                    FilterChenge={chengeFilter}
+                    FilterStatus={tl.isDone}
+                    chengeChecked={chengeChecked}
+                    AddNewTodoTask={AddNewTodoTask}/>)
+            })
+            }
+
         </div>
     );
 }
-
 
 export default App;
