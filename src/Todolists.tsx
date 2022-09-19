@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useState} from "react";
+import React from "react";
 import {FilterType} from "./App";
-
+import {AddItemForm} from "./AddItemForm";
 
 
 export type TaskType = {
@@ -23,45 +23,21 @@ export  type PropsType = {
 
 export function Todolists(props: PropsType) {
 
-    let [ButtonAdd, SetButtonAdd] = useState("")
-    let [ErrorMesage,SetErrorMessage]=useState<string | null>(null)
-    const ChengeSetButtonAdd = (e: ChangeEvent<HTMLInputElement>) => {
-        SetButtonAdd(e.currentTarget.value)
-        SetErrorMessage(null)
-    }
-    const OnClikOnbutton = (e: string) => {
-        if(e.trim() != ""){
-            props.AddNewTodoTask(ButtonAdd,props.id)
-            SetButtonAdd("")
-            SetErrorMessage(null)
-        }else {
-            SetErrorMessage("You need to write something")
-        }
-    }
+
+
 
     const FilterAll=()=>{ props.FilterChenge("All",props.id)}
     const FilterCompleted=()=>{props.FilterChenge("Completed",props.id)}
     const FilterActive=()=>{props.FilterChenge("Active",props.id)}
+
+    const addTask=(title:string)=>{
+        props.AddNewTodoTask(title,props.id)
+    }
     return (
         <div className={"todolist"}>
                 <h1>{props.title}  <button onClick={() => {props.DeleteTodo(props.id)}}>x</button></h1>
-            <div>
-                <input onKeyPress={(e) => {
-                    if(e.charCode == 13){
-                        OnClikOnbutton(ButtonAdd)
-                    }
-                }}
-                       onChange={(e) => {
-                           ChengeSetButtonAdd(e)
-                       }}
-                       className={ ErrorMesage ? "Todolist-AddTasks-input": ""}
-                       value={ButtonAdd} type="text"/>
-                <button onClick={() => {
-                    OnClikOnbutton(ButtonAdd)
-                }}>+
-                </button>
-            </div>
-              {ErrorMesage ?   <div>{ErrorMesage}</div> :''}
+
+                <AddItemForm key={props.id} AddItem={addTask} />
                 <ul>
                     {
                         props.tasks.map(e =>{

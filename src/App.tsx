@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {TaskType, Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
 import './App.css';
+import {AddItemForm} from "./AddItemForm";
 
 export type FilterType = "All" | "Completed" | "Active";
 type TodolistType = {
@@ -41,7 +42,7 @@ function App() {
 
     }
 
-    function DeleteTodo(id:string) {
+    function DeleteTodo(id: string) {
         let deleteTodo = TodolistData.filter(e => e.id !== id)
         SetTodolistData(deleteTodo)
         delete tasksObj[id]
@@ -82,9 +83,16 @@ function App() {
         ]
 
     })
-
+    const AddTodolistButtonProps = (title: string) => {
+        let todolist: TodolistType = {id: uuidv4(), title, isDone: "All"}
+        SetTodolistData([todolist, ...TodolistData])
+        SetTasksObj({
+            ...tasksObj,[todolist.id]:[]
+        })
+    }
     return (
         <div className="App">
+            <AddItemForm AddItem={AddTodolistButtonProps}/>
             {TodolistData.map((tl) => {
                 let filtrData = tasksObj[tl.id]
                 if (tl.isDone == "Completed") {
