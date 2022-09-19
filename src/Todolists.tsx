@@ -44,7 +44,8 @@ export function Todolists(props: PropsType) {
     const FilterActive=()=>{props.FilterChenge("Active",props.id)}
     return (
         <div className={"todolist"}>
-                <h1>{props.title}</h1>
+                <h1>{props.title}  <button onClick={() => {props.DeleteTodo(props.id)}}>x</button></h1>
+            <div>
                 <input onKeyPress={(e) => {
                     if(e.charCode == 13){
                         OnClikOnbutton(ButtonAdd)
@@ -59,10 +60,7 @@ export function Todolists(props: PropsType) {
                     OnClikOnbutton(ButtonAdd)
                 }}>+
                 </button>
-            <button onClick={() => {
-                props.DeleteTodo(ButtonAdd)
-            }}>x
-            </button>
+            </div>
               {ErrorMesage ?   <div>{ErrorMesage}</div> :''}
                 <ul>
                     {

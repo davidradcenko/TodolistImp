@@ -42,10 +42,11 @@ function App() {
     }
 
     function DeleteTodo(id:string) {
-        let deleteTodo = TodolistData.find(e => e.id == id)
-        if(deleteTodo){
-            SetTodolistData([delete deleteTodo])
-        }
+        let deleteTodo = TodolistData.filter(e => e.id !== id)
+        SetTodolistData(deleteTodo)
+        delete tasksObj[id]
+        SetTasksObj({...tasksObj})
+
     }
 
     function chengeFilter(value: FilterType, todolistId: string) {
