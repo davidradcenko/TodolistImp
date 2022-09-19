@@ -30,23 +30,33 @@ function App() {
 
     function chengeChecked(id: string, todolistId: string) {
         let T = tasksObj[todolistId]
-        let newMass = T.filter(e => e.id == id)
+        let newMass = T.find(e => e.id == id)
 
-        if(newMass){
-            console.log(newMass)
-            tasksObj[0].checked = true
+        if (newMass) {
+
+            newMass.checked = !newMass.checked
             SetTasksObj({...tasksObj})
         }
 
 
     }
 
-    function chengeFilter(value: FilterType, todolistId: string) {
-        let todo = TodolistData.find(tl => tl.id === todolistId)
-        if (todo) {
+    function DeleteTodo(id:string) {
+        let deleteTodo = TodolistData.find(e => e.id == id)
+        if(deleteTodo){
+            SetTodolistData([delete deleteTodo])
+        }
+    }
 
+    function chengeFilter(value: FilterType, todolistId: string) {
+        let todo = TodolistData.find(tl => tl.id == todolistId)
+        if (todo) {
+            console.log(todo)
             todo.isDone = value
-            SetTodolistData({...TodolistData})
+            console.log(todo)
+            debugger
+            SetTodolistData([...TodolistData])
+            debugger
         }
 
     }
@@ -55,7 +65,7 @@ function App() {
     let todolistId2 = uuidv4()
 
     let [TodolistData, SetTodolistData] = useState<Array<TodolistType>>([
-        {id: todolistId1, title: "Books", isDone: "Completed"},
+        {id: todolistId1, title: "Books", isDone: "All"},
         {id: todolistId2, title: "Pets", isDone: "Active"}
     ])
     let [tasksObj, SetTasksObj] = useState({
@@ -90,6 +100,8 @@ function App() {
                     FilterChenge={chengeFilter}
                     FilterStatus={tl.isDone}
                     chengeChecked={chengeChecked}
+                    title={tl.title}
+                    DeleteTodo={DeleteTodo}
                     AddNewTodoTask={AddNewTodoTask}/>)
             })
             }

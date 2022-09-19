@@ -7,3 +7,9 @@
 .Todolist-TasksList-ChekedTrue{
     opacity: 0.6;
 }
+.App{
+    display: flex;
+}
+.todolist{
+    padding-right: 50px;
+}

@@ -13,9 +13,11 @@ export  type PropsType = {
     id:string,
     tasks: Array<TaskType>,
     removeTask: (id: string,todolistId:string) => void,
-    FilterChenge: (param: FilterType,todolistId:string) => void
+    FilterChenge: (param: FilterType,todolistId:string) => void,
     chengeChecked: (id: string,todolistId:string) => void,
-    AddNewTodoTask: (title: string,todolistId:string) => void
+    AddNewTodoTask: (title: string,todolistId:string) => void,
+    title:string,
+    DeleteTodo:(id:string)=>void,
     FilterStatus: FilterType
 }
 
@@ -41,8 +43,8 @@ export function Todolists(props: PropsType) {
     const FilterCompleted=()=>{props.FilterChenge("Completed",props.id)}
     const FilterActive=()=>{props.FilterChenge("Active",props.id)}
     return (
-        <>
-                <h1>Todolist</h1>
+        <div className={"todolist"}>
+                <h1>{props.title}</h1>
                 <input onKeyPress={(e) => {
                     if(e.charCode == 13){
                         OnClikOnbutton(ButtonAdd)
@@ -57,11 +59,15 @@ export function Todolists(props: PropsType) {
                     OnClikOnbutton(ButtonAdd)
                 }}>+
                 </button>
+            <button onClick={() => {
+                props.DeleteTodo(ButtonAdd)
+            }}>x
+            </button>
               {ErrorMesage ?   <div>{ErrorMesage}</div> :''}
                 <ul>
                     {
                         props.tasks.map(e =>{
-                        const deleteFun=(id:string)=>{props.removeTask(e.id,e.id)}
+                        const deleteFun=(id:string)=>{props.removeTask(e.id,props.id)}
                             return (
                                 <li className={e.checked == true ? "Todolist-TasksList-ChekedTrue":""} key={e.id}>
                                     <input checked={e.checked} onClick={() => props.chengeChecked(e.id,props.id)} type="checkbox"/>
@@ -76,6 +82,6 @@ export function Todolists(props: PropsType) {
                 <button className={props.FilterStatus == "Active" ? "Todolist-button-filter":""} onClick={() => {FilterActive()}}>Active</button>
                 <button className={props.FilterStatus == "Completed" ? "Todolist-button-filter":""} onClick={() => {FilterCompleted()}}>Completed</button>
 
-        </>
+        </div>
     )
 }
