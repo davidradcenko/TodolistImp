@@ -10,7 +10,9 @@ type TodolistType = {
     title: string,
     isDone: FilterType
 }
-
+type TodoTasksType={
+    [key:string]:Array<TaskType>
+}
 
 function App() {
 
@@ -62,6 +64,16 @@ function App() {
         }
 
     }
+    const ChengeTaskName=(idTodo:string,idTask:string,NewTitle:string)=>{
+        debugger
+        let Todo= tasksObj[idTodo]
+        let task=Todo.find(e=>e.id == idTask)
+        if(task){
+            task.name=NewTitle
+            SetTasksObj({...tasksObj})
+            debugger
+        }
+    }
 
     let todolistId1 = uuidv4()
     let todolistId2 = uuidv4()
@@ -70,7 +82,7 @@ function App() {
         {id: todolistId1, title: "Books", isDone: "All"},
         {id: todolistId2, title: "Pets", isDone: "Active"}
     ])
-    let [tasksObj, SetTasksObj] = useState({
+    let [tasksObj, SetTasksObj] = useState<TodoTasksType>({
         [todolistId1]: [
             {id: uuidv4(), name: "Frog", checked: false},
             {id: uuidv4(), name: "Dog", checked: true},
@@ -83,6 +95,14 @@ function App() {
         ]
 
     })
+    const ChengeTitleTodo=(idTodo:string,NewTitle:string)=>{
+        let todo=TodolistData.find(tl=> tl.id == idTodo)
+        if(todo){
+            todo.title=NewTitle
+            SetTodolistData([...TodolistData])
+            debugger
+        }
+    }
     const AddTodolistButtonProps = (title: string) => {
         let todolist: TodolistType = {id: uuidv4(), title, isDone: "All"}
         SetTodolistData([todolist, ...TodolistData])
@@ -104,6 +124,8 @@ function App() {
                 return (<Todolists
                     key={tl.id}
                     id={tl.id}
+                    ChengeTitleTodo={ChengeTitleTodo}
+                    ChengeTaskName={ChengeTaskName}
                     tasks={filtrData}
                     removeTask={removeTask}
                     FilterChenge={chengeFilter}
