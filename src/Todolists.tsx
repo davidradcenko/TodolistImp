@@ -2,6 +2,9 @@ import React from "react";
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import {IconButton,Button} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+
 
 
 export type TaskType = {
@@ -48,10 +51,9 @@ export function Todolists(props: PropsType) {
         <div className={"todolist"}>
             <h1>
                 <EditableSpan title={props.title} ChengeTaskName={ChegeTitleTodo}/>
-                <button onClick={() => {
-                    props.DeleteTodo(props.id)
-                }}>x
-                </button>
+                <IconButton onClick={() => {props.DeleteTodo(props.id)}} >
+                    <Delete/>
+                </IconButton>
             </h1>
 
             <AddItemForm key={props.id} AddItem={addTask}/>
@@ -71,24 +73,26 @@ export function Todolists(props: PropsType) {
                                        type="checkbox"/>
                                 <EditableSpan ChengeTaskName={SaveInputChekedNameHendler} key={e.id} title={e.name}/>
 
-                                <button onClick={() => deleteFun(e.id)} type="button">x</button>
+                                <IconButton onClick={() => deleteFun(e.id)} >
+                                    <Delete />
+                                </IconButton>
                             </li>
                         )
                     })
                 }
             </ul>
-            <button className={props.FilterStatus == "All" ? "Todolist-button-filter" : ""} onClick={() => {
+            <Button variant={props.FilterStatus == "All" ? "contained" : "outlined"}  onClick={() => {
                 FilterAll()
             }}>All
-            </button>
-            <button className={props.FilterStatus == "Active" ? "Todolist-button-filter" : ""} onClick={() => {
+            </Button>
+            <Button variant={props.FilterStatus == "Active" ? "contained" : "outlined"}  onClick={() => {
                 FilterActive()
             }}>Active
-            </button>
-            <button className={props.FilterStatus == "Completed" ? "Todolist-button-filter" : ""} onClick={() => {
+            </Button>
+            <Button variant={props.FilterStatus == "Completed" ? "contained" : "outlined"}  onClick={() => {
                 FilterCompleted()
             }}>Completed
-            </button>
+            </Button>
 
         </div>
     )

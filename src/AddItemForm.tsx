@@ -1,4 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
+import Button from "@mui/material/Button";
 
 type AddItemFormType = {
     AddItem: (title: string) => void
@@ -33,10 +34,7 @@ export function AddItemForm(props: AddItemFormType) {
                    }}
                    className={ErrorMesage ? "Todolist-AddTasks-input" : ""}
                    value={ButtonAdd} type="text"/>
-            <button onClick={() => {
-                OnClikOnbutton(ButtonAdd)
-            }}>+
-            </button>
+            <Button onClick={() => {OnClikOnbutton(ButtonAdd)}}  variant={"outlined"} color={"primary"}  >+</Button>
             {ErrorMesage ? <div>{ErrorMesage}</div> : ''}
         </div>
     )
