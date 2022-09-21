@@ -1,5 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 import Button from "@mui/material/Button";
+import {IconButton, TextField} from "@mui/material";
+import {ControlPoint} from "@mui/icons-material";
 
 type AddItemFormType = {
     AddItem: (title: string) => void
@@ -9,7 +11,7 @@ export function AddItemForm(props: AddItemFormType) {
     let [ButtonAdd, SetButtonAdd] = useState("")
     let [ErrorMesage, SetErrorMessage] = useState<string | null>(null)
 
-    const ChengeSetButtonAdd = (e: ChangeEvent<HTMLInputElement>) => {
+    const ChengeSetButtonAdd = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         SetButtonAdd(e.currentTarget.value)
         SetErrorMessage(null)
     }
@@ -24,17 +26,16 @@ export function AddItemForm(props: AddItemFormType) {
     }
     return (
         <div>
-            <input onKeyPress={(e) => {
-                if (e.charCode == 13) {
-                    OnClikOnbutton(ButtonAdd)
-                }
-            }}
-                   onChange={(e) => {
-                       ChengeSetButtonAdd(e)
-                   }}
-                   className={ErrorMesage ? "Todolist-AddTasks-input" : ""}
-                   value={ButtonAdd} type="text"/>
-            <Button onClick={() => {OnClikOnbutton(ButtonAdd)}}  variant={"outlined"} color={"primary"}  >+</Button>
+            <TextField onKeyPress={(e) => {if (e.charCode == 13) {OnClikOnbutton(ButtonAdd)}}}
+                       variant={"outlined"}
+                       label={"Type value"}
+                       onChange={(e) => {ChengeSetButtonAdd(e)}}
+                       error={!!ErrorMesage}
+                       value={ButtonAdd} type="text"/>
+
+            <IconButton onClick={() => {OnClikOnbutton(ButtonAdd)}}  color={'primary'}>
+                <ControlPoint/>
+            </IconButton>
             {ErrorMesage ? <div>{ErrorMesage}</div> : ''}
         </div>
     )

@@ -2,8 +2,8 @@ import React from "react";
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {IconButton,Button} from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import {IconButton, Button, Checkbox} from "@mui/material";
+import {CheckBox, Delete} from "@mui/icons-material";
 
 
 
@@ -57,7 +57,7 @@ export function Todolists(props: PropsType) {
             </h1>
 
             <AddItemForm key={props.id} AddItem={addTask}/>
-            <ul>
+            <div>
                 {
                     props.tasks.map(e => {
                         const deleteFun = (id: string) => {
@@ -68,19 +68,19 @@ export function Todolists(props: PropsType) {
                             debugger
                         }
                         return (
-                            <li className={e.checked == true ? "Todolist-TasksList-ChekedTrue" : ""} key={e.id}>
-                                <input checked={e.checked} onClick={() => props.chengeChecked(e.id, props.id)}
-                                       type="checkbox"/>
+                            <div className={e.checked == true ? "Todolist-TasksList-ChekedTrue" : ""} key={e.id}>
+                                <Checkbox checked={e.checked} onClick={() => props.chengeChecked(e.id, props.id)}/>
+
                                 <EditableSpan ChengeTaskName={SaveInputChekedNameHendler} key={e.id} title={e.name}/>
 
                                 <IconButton onClick={() => deleteFun(e.id)} >
                                     <Delete />
                                 </IconButton>
-                            </li>
+                            </div>
                         )
                     })
                 }
-            </ul>
+            </div>
             <Button variant={props.FilterStatus == "All" ? "contained" : "outlined"}  onClick={() => {
                 FilterAll()
             }}>All

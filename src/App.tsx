@@ -3,6 +3,9 @@ import {TaskType, Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
+import {AppBar, Box, Container, IconButton, Typography, Button, Toolbar, Grid, Paper} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import {Grade} from "@mui/icons-material";
 
 export type FilterType = "All" | "Completed" | "Active";
 type TodolistType = {
@@ -112,8 +115,28 @@ function App() {
     }
     return (
         <div className="App">
-            <AddItemForm AddItem={AddTodolistButtonProps}/>
-            {TodolistData.map((tl) => {
+
+            <AppBar position="static">
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                        >
+                            <MenuIcon/>
+                        </IconButton>
+                        <Typography variant="h6">
+                            News
+                        </Typography>
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                </AppBar>
+            <Container fixed>
+                <Grid container style={{padding:"20px 0px 20px 0px"}}>
+                    <AddItemForm AddItem={AddTodolistButtonProps}/>
+                </Grid>
+                <Grid container spacing={10}>
+                    {TodolistData.map((tl) => {
                 let filtrData = tasksObj[tl.id]
                 if (tl.isDone == "Completed") {
                     filtrData = filtrData.filter(e => e.checked == false)
@@ -121,22 +144,29 @@ function App() {
                 if (tl.isDone == "Active") {
                     filtrData = filtrData.filter(e => e.checked == true)
                 }
-                return (<Todolists
-                    key={tl.id}
-                    id={tl.id}
-                    ChengeTitleTodo={ChengeTitleTodo}
-                    ChengeTaskName={ChengeTaskName}
-                    tasks={filtrData}
-                    removeTask={removeTask}
-                    FilterChenge={chengeFilter}
-                    FilterStatus={tl.isDone}
-                    chengeChecked={chengeChecked}
-                    title={tl.title}
-                    DeleteTodo={DeleteTodo}
-                    AddNewTodoTask={AddNewTodoTask}/>)
-            })
-            }
+                return (
+                    <Grid item >
+                        <Paper style={{padding:"10px"}}>
+                            <Todolists
+                                key={tl.id}
+                                id={tl.id}
+                                ChengeTitleTodo={ChengeTitleTodo}
+                                ChengeTaskName={ChengeTaskName}
+                                tasks={filtrData}
+                                removeTask={removeTask}
+                                FilterChenge={chengeFilter}
+                                FilterStatus={tl.isDone}
+                                chengeChecked={chengeChecked}
+                                title={tl.title}
+                                DeleteTodo={DeleteTodo}
+                                AddNewTodoTask={AddNewTodoTask}/>
+                        </Paper>
+                    </Grid>
 
+                )
+                        })}
+                    </Grid>
+            </Container>
         </div>
     );
 }
