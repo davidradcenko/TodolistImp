@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {Grade} from "@mui/icons-material";
 
 export type FilterType = "All" | "Completed" | "Active";
-type TodolistType = {
+export type TodolistType = {
     id: string,
     title: string,
     isDone: FilterType
