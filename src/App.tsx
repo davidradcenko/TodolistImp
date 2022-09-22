@@ -13,7 +13,7 @@ export type TodolistType = {
     title: string,
     isDone: FilterType
 }
-type TodoTasksType={
+export  type TodoTasksType={
     [key:string]:Array<TaskType>
 }
 
@@ -47,6 +47,17 @@ function App() {
 
     }
 
+    const ChengeTaskName=(idTodo:string,idTask:string,NewTitle:string)=>{
+        debugger
+        let Todo= tasksObj[idTodo]
+        let task=Todo.find(e=>e.id == idTask)
+        if(task){
+            task.name=NewTitle
+            SetTasksObj({...tasksObj})
+            debugger
+        }
+    }
+
     function DeleteTodo(id: string) {
         let deleteTodo = TodolistData.filter(e => e.id !== id)
         SetTodolistData(deleteTodo)
@@ -54,7 +65,6 @@ function App() {
         SetTasksObj({...tasksObj})
 
     }
-
     function chengeFilter(value: FilterType, todolistId: string) {
         let todo = TodolistData.find(tl => tl.id == todolistId)
         if (todo) {
@@ -67,16 +77,8 @@ function App() {
         }
 
     }
-    const ChengeTaskName=(idTodo:string,idTask:string,NewTitle:string)=>{
-        debugger
-        let Todo= tasksObj[idTodo]
-        let task=Todo.find(e=>e.id == idTask)
-        if(task){
-            task.name=NewTitle
-            SetTasksObj({...tasksObj})
-            debugger
-        }
-    }
+
+
 
     let todolistId1 = uuidv4()
     let todolistId2 = uuidv4()
