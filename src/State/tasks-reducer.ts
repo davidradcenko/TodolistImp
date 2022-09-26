@@ -13,6 +13,13 @@ export  type AddTaskAT={
     title: string,
     idTodo:string
 }
+export type ChengeTaskStatus={
+    type:"CHENGE-TASK-STATUS",
+    idTodo:string,
+    idTask:string,
+    Status:boolean
+
+}
 // export type ChengeTitleTodoAT={
 //     type:"ChengeTitle-Todo",
 //     id:string,
@@ -24,7 +31,7 @@ export  type AddTaskAT={
 //     id:string
 // }
 //
-type ActionTypes = RemoveTaskAT | AddTaskAT
+type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus
 
 export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTasksType => {
     switch (action.type) {
@@ -41,7 +48,15 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
             stateCopy[action.idTodo].push(newTask)
             return stateCopy
         }
-
+            case 'CHENGE-TASK-STATUS':{
+                let StateCopy={...state}
+                let tasks= StateCopy[action.idTodo]
+                let task=tasks.find(t=>t.id === action.idTask)
+                if (task){
+                    task.checked=action.Status
+                }
+                return StateCopy
+            }
         default :
             throw new Error("I dont`t understand that action type")
     }
@@ -52,6 +67,10 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
  export const AddTaskAC=( idTodo:string, title: string):AddTaskAT=>{
      return {type:"Add-Task",idTodo,title}
  }
+ export const ChengeTaskStatusAC=( idTodo:string,idTask:string, Status: boolean):ChengeTaskStatus=>{
+     return {type:"CHENGE-TASK-STATUS",idTodo,idTask,Status}
+ }
+
 // export const ChengeTitleTodoAC=( id:string,title:string):ChengeTitleTodoAT=>{
 //     return {type:"ChengeTitle-Todo",id,title}
 // }
