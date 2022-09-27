@@ -1,5 +1,6 @@
 import { TodoTasksType} from "../App";
 import {AddTaskAC, ChengeTaskStatusAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./tasks-reducer";
+import {RemoveTodoAC, todolistsRedusers} from "./todolists-reducer";
 
 test('remove task',()=>{
 
@@ -81,4 +82,26 @@ test("change task Title",()=>{
     }
     let result= tasksRedusers(task,ChengeTaskTitleAC("todo1","1","Hellow"))
     expect(result['todo1'][0].name).toBe("Hellow")
+})
+test("properties of todo hood be deleted",()=>{
+    let task:TodoTasksType={
+        "todo1":[
+            {id: "1", name: "Frog", checked: false},
+            {id:"2", name: "Dog", checked: true},
+            {id: "3", name: "Cat", checked: false},
+            {id: "4", name: "Bags", checked: true}
+        ],
+        "todo2":[
+            {id: "1", name: "Frog", checked: false},
+            {id:"2", name: "Dog", checked: true},
+            {id: "3", name: "Cat", checked: false},
+            {id: "4", name: "Bags", checked: true}
+        ]
+    }
+    let deletedF=RemoveTodoAC("todo1")
+    let result= tasksRedusers(task,deletedF)
+
+    const keys=Object.keys(result)
+    expect(result["todo1"]).not.toBeDefined()
+    expect(keys.length).toBe(1)
 })

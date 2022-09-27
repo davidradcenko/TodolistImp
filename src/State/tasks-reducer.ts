@@ -1,6 +1,7 @@
 import {FilterType, TodolistType, TodoTasksType} from "../App";
 import {v4} from "uuid";
 import {TaskType} from "../Todolists";
+import {RemoveTodoAT} from "./todolists-reducer";
 
 
 export  type RemoveTaskAT = {
@@ -38,7 +39,7 @@ export type ChengeTaskName = {
 //     id:string
 // }
 //
-type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName
+type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT
 
 export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTasksType => {
     switch (action.type) {
@@ -73,6 +74,11 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
             }
 
             return StateCopy
+        }
+        case "Remove-Todo":{
+            let stateCope={...state}
+            delete stateCope[action.id]
+            return stateCope
         }
         default :
             throw new Error("I dont`t understand that action type")
