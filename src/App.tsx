@@ -37,9 +37,7 @@ function App() {
     function chengeChecked(id: string, todolistId: string) {
         let T = tasksObj[todolistId]
         let newMass = T.find(e => e.id == id)
-
         if (newMass) {
-
             newMass.checked = !newMass.checked
             SetTasksObj({...tasksObj})
         }

@@ -18,8 +18,6 @@ export type ChengeTaskStatus = {
     type: "CHENGE-TASK-STATUS",
     idTodo: string,
     idTask: string,
-    Status: boolean
-
 }
 export type ChengeTaskName = {
     type: "CHENGE-TASK-NAME",
@@ -57,13 +55,14 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
             return stateCopy
         }
         case 'CHENGE-TASK-STATUS': {
-            const StateCopy = {...state}
+            let StateCopy = {...state}
             let tasks = StateCopy[action.idTodo]
             let task = tasks.find(t => t.id == action.idTask)
             if (task) {
-              task.checked  = action.Status
+              task.checked  = !task.checked
+                StateCopy[action.idTodo][0]=task
             }
-            return StateCopy
+            return {...StateCopy}
         }
         case 'CHENGE-TASK-NAME': {
             let StateCopy = {...state}
@@ -90,8 +89,8 @@ export const RemoveTaskAC = (idTodo: string, idTask: string): RemoveTaskAT => {
 export const AddTaskAC = (idTodo: string, title: string): AddTaskAT => {
     return {type: "Add-Task", idTodo, title}
 }
-export const ChengeTaskStatusAC = (idTodo: string, idTask: string, Status: boolean): ChengeTaskStatus => {
-    return {type: "CHENGE-TASK-STATUS", idTodo, idTask, Status}
+export const ChengeTaskStatusAC = (idTodo: string, idTask: string): ChengeTaskStatus => {
+    return {type: "CHENGE-TASK-STATUS", idTodo, idTask}
 }
 export const ChengeTaskTitleAC = (idTodo: string, idTask: string, name: string): ChengeTaskName => {
     return {type: "CHENGE-TASK-NAME", idTodo, idTask, name}
