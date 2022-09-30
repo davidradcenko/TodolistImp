@@ -1,5 +1,5 @@
 import { TodoTasksType} from "../App";
-import {AddTaskAC, ChengeTaskStatusAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./tasks-reducer";
+import {AddTaskAC, ChengeTaskCheckedAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./tasks-reducer";
 import {RemoveTodoAC, todolistsRedusers} from "./todolists-reducer";
 
 test('remove task',()=>{
@@ -28,9 +28,7 @@ test('Add task',()=>{
     let task:TodoTasksType={
         "todo1":[
             {id: "1", name: "Frog", checked: false},
-            {id:"2", name: "Dog", checked: true},
-            {id: "3", name: "Cat", checked: false},
-            {id: "4", name: "Bags", checked: true}
+            {id:"2", name: "Dog", checked: true}
         ],
         "todo2":[
             {id: "1", name: "Frog", checked: false},
@@ -42,9 +40,8 @@ test('Add task',()=>{
 
     let result= tasksRedusers(task,AddTaskAC("todo1","myNewTask"))
 
-    expect(result["todo1"].length).toBe(5)
-    expect(result["todo1"][4].name).toBe("myNewTask")
-    expect(result["todo1"][0].id).toBeDefined()
+    expect(result["todo1"].length).toBe(3)
+
 })
 test("change task isDone",()=>{
     let task:TodoTasksType={
@@ -61,7 +58,7 @@ test("change task isDone",()=>{
             {id: "4", name: "Bags", checked: true}
         ]
     }
-    let result= tasksRedusers(task,ChengeTaskStatusAC("todo1","0"))
+    let result= tasksRedusers(task,ChengeTaskCheckedAC("todo1","0"))
     expect(result['todo1'][0].checked).toBe(true)
     expect(result['todo1'][0].name).toBe("Frog")
 })

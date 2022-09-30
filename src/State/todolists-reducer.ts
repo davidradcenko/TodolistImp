@@ -29,15 +29,21 @@ export const todolistsRedusers = (state: Array<TodolistType>, action: ActionType
             return state.filter(e=>e.id != action.id)
         }
         case  'Add-Todo':{
-            return [...state,{id:"fefe",title:action.title,isDone:"All"}]
+            let stateCope=[...state]
+            let newTodo:TodolistType={id:v4(),title:action.title,isDone:"All"}
+            let newtodolist=[...stateCope,newTodo]
+            debugger
+            return newtodolist
         }
         case 'ChengeTitle-Todo':{
-            let newT=state.find(e=> e.id == action.id)
+            const stateCope=[...state]
+            let newT= stateCope.find(e=> e.id == action.id)
             if(newT){
                 newT.title=action.title
-                return [...state,newT]
+                debugger
+                // return [...stateCope,newT]
             }
-           return state
+           return stateCope
         }
         case 'Change-Isdone-Todo':{
             let newR=state.find(e=>e.id==action.id)

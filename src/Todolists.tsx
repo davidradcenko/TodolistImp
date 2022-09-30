@@ -20,7 +20,7 @@ export  type PropsType = {
     tasks: Array<TaskType>,
     removeTask: (id: string, todolistId: string) => void,
     FilterChenge: (param: FilterType, todolistId: string) => void,
-    chengeChecked: (id: string, todolistId: string) => void,
+    chengeChecked: (id: string, todolistId: string,cheked:boolean) => void,
     AddNewTodoTask: (title: string, todolistId: string) => void,
     title: string,
     DeleteTodo: (id: string) => void,
@@ -69,7 +69,7 @@ export function Todolists(props: PropsType) {
                         }
                         return (
                             <div className={e.checked == true ? "Todolist-TasksList-ChekedTrue" : ""} key={e.id}>
-                                <Checkbox checked={e.checked} onClick={() => props.chengeChecked(e.id, props.id)}/>
+                                <Checkbox checked={e.checked} onClick={() => props.chengeChecked(e.id, props.id,!e.checked)}/>
 
                                 <EditableSpan ChengeTaskName={SaveInputChekedNameHendler} key={e.id} title={e.name}/>
 

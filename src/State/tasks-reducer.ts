@@ -18,6 +18,7 @@ export type ChengeTaskStatus = {
     type: "CHENGE-TASK-STATUS",
     idTodo: string,
     idTask: string,
+    cheked:boolean
 }
 export type ChengeTaskName = {
     type: "CHENGE-TASK-NAME",
@@ -46,36 +47,45 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
             let todo = stateCopy[action.idTodo]
             let n = todo.filter(e => e.id != action.idTask)
             stateCopy[action.idTodo] = n
+            debugger
             return {...stateCopy}
         }
         case 'Add-Task': {
             const stateCopy = {...state}
             const newTask: TaskType = {id: v4(), name: action.title, checked: false}
-            stateCopy[action.idTodo].push(newTask)
+            let T = stateCopy[action.idTodo]
+            let newTodoTasks = [newTask, ...T]
+            //stateCopy[action.idTodo].push(newTask)
+            stateCopy[action.idTodo] = newTodoTasks
+            debugger
             return stateCopy
         }
         case 'CHENGE-TASK-STATUS': {
             let StateCopy = {...state}
+
             let tasks = StateCopy[action.idTodo]
             let task = tasks.find(t => t.id == action.idTask)
             if (task) {
-              task.checked  = !task.checked
-                StateCopy[action.idTodo][0]=task
+                task.checked = action.cheked
+                // StateCopy[action.idTodo][0] = task
+                debugger
             }
-            return {...StateCopy}
+            return StateCopy
         }
         case 'CHENGE-TASK-NAME': {
             let StateCopy = {...state}
             let tasks = state[action.idTodo]
+            debugger
             let task = tasks.find(t => t.id == action.idTask)
             if (task) {
                 task.name = action.name
+                debugger
             }
 
             return StateCopy
         }
-        case "Remove-Todo":{
-            let stateCope={...state}
+        case "Remove-Todo": {
+            let stateCope = {...state}
             delete stateCope[action.id]
             return stateCope
         }
@@ -89,8 +99,8 @@ export const RemoveTaskAC = (idTodo: string, idTask: string): RemoveTaskAT => {
 export const AddTaskAC = (idTodo: string, title: string): AddTaskAT => {
     return {type: "Add-Task", idTodo, title}
 }
-export const ChengeTaskStatusAC = (idTodo: string, idTask: string): ChengeTaskStatus => {
-    return {type: "CHENGE-TASK-STATUS", idTodo, idTask}
+export const ChengeTaskCheckedAC = (idTodo: string, idTask: string, cheked:boolean): ChengeTaskStatus => {
+    return {type: "CHENGE-TASK-STATUS", idTodo, idTask,cheked}
 }
 export const ChengeTaskTitleAC = (idTodo: string, idTask: string, name: string): ChengeTaskName => {
     return {type: "CHENGE-TASK-NAME", idTodo, idTask, name}

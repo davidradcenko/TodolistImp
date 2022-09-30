@@ -13,7 +13,7 @@ import {
     RemoveTodoAC,
     todolistsRedusers
 } from "./State/todolists-reducer";
-import {AddTaskAC, ChengeTaskStatusAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./State/tasks-reducer";
+import {AddTaskAC, ChengeTaskCheckedAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./State/tasks-reducer";
 
 export type FilterType = "All" | "Completed" | "Active";
 export type TodolistType = {
@@ -53,27 +53,29 @@ function AppWhisReducer() {
     function AddNewTodoTask(title: string, todolistId: string) {
         dispadchTasks(AddTaskAC(todolistId,title))
     }
-    function chengeChecked( todolistId: string,id: string) {
-        dispadchTasks(ChengeTaskStatusAC(id,todolistId))
-    }
+    const ChengeTitleTodo=(idTodo:string,NewTitle:string)=>{
 
+        dispadchTodo(ChengeTitleTodoAC(idTodo,NewTitle))
+    }
     const ChengeTaskName=(idTodo:string,idTask:string,NewTitle:string)=>{
-       dispadchTasks(ChengeTaskTitleAC(idTodo,idTodo,NewTitle))
+
+        dispadchTasks(ChengeTaskTitleAC(idTodo,idTask,NewTitle))
     }
     function DeleteTodo(id: string) {
         dispadchTodo(RemoveTodoAC(id))
 
     }
+    function chengeTaskChecked( todolistId: string,id: string,cheked:boolean) {
 
-    function chengeFilter(value: FilterType, todolistId: string) {
+        dispadchTasks(ChengeTaskCheckedAC(id,todolistId,cheked))
+    }
+    function chengeTasksFilter(value: FilterType, todolistId: string) {
        dispadchTodo(ChangeIsdoneTodoAC(value,todolistId))
-
-    }
-    const ChengeTitleTodo=(idTodo:string,NewTitle:string)=>{
-        dispadchTodo(ChengeTitleTodoAC(idTodo,NewTitle))
     }
 
-    const AddTodolistButtonProps = (title: string) => {
+
+    function AddTodolistButtonProps (title: string){
+        debugger
         dispadchTodo(AddTodoAC(title))
     }
 
@@ -119,9 +121,9 @@ function AppWhisReducer() {
                                         ChengeTaskName={ChengeTaskName}
                                         tasks={filtrData}
                                         removeTask={removeTask}
-                                        FilterChenge={chengeFilter}
+                                        FilterChenge={chengeTasksFilter}
                                         FilterStatus={tl.isDone}
-                                        chengeChecked={chengeChecked}
+                                        chengeChecked={chengeTaskChecked}
                                         title={tl.title}
                                         DeleteTodo={DeleteTodo}
                                         AddNewTodoTask={AddNewTodoTask}/>
