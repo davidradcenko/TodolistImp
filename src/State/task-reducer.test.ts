@@ -58,7 +58,7 @@ test("change task isDone",()=>{
             {id: "4", name: "Bags", checked: true}
         ]
     }
-    let result= tasksRedusers(task,ChengeTaskCheckedAC("todo1","0"))
+    let result= tasksRedusers(task,ChengeTaskCheckedAC("todo1","0",false))
     expect(result['todo1'][0].checked).toBe(true)
     expect(result['todo1'][0].name).toBe("Frog")
 })

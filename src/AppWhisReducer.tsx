@@ -76,7 +76,9 @@ function AppWhisReducer() {
 
     function AddTodolistButtonProps (title: string){
         debugger
-        dispadchTodo(AddTodoAC(title))
+        const action=AddTodoAC(title)
+        dispadchTasks(action)
+        dispadchTodo(action)
     }
 
 

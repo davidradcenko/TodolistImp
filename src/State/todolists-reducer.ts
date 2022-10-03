@@ -8,7 +8,8 @@ export  type RemoveTodoAT={
 }
 export  type AddTodoAT={
     type:"Add-Todo",
-    title:string
+    title:string,
+    TodolistId:string
 }
 export type ChengeTitleTodoAT={
     type:"ChengeTitle-Todo",
@@ -29,11 +30,7 @@ export const todolistsRedusers = (state: Array<TodolistType>, action: ActionType
             return state.filter(e=>e.id != action.id)
         }
         case  'Add-Todo':{
-            let stateCope=[...state]
-            let newTodo:TodolistType={id:v4(),title:action.title,isDone:"All"}
-            let newtodolist=[...stateCope,newTodo]
-            debugger
-            return newtodolist
+            return [...state,{id:action.TodolistId,title:action.title,isDone:"All"}]
         }
         case 'ChengeTitle-Todo':{
             const stateCope=[...state]
@@ -60,7 +57,7 @@ export const RemoveTodoAC=(id:string):RemoveTodoAT=>{
     return {type:"Remove-Todo",id}
 }
 export const AddTodoAC=( title:string):AddTodoAT=>{
-    return {type:"Add-Todo",title}
+    return {type:"Add-Todo",title,TodolistId:v4()}
 }
 export const ChengeTitleTodoAC=( id:string,title:string):ChengeTitleTodoAT=>{
     return {type:"ChengeTitle-Todo",id,title}

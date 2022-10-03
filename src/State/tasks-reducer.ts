@@ -1,7 +1,7 @@
 import {FilterType, TodolistType, TodoTasksType} from "../App";
 import {v4} from "uuid";
 import {TaskType} from "../Todolists";
-import {RemoveTodoAT} from "./todolists-reducer";
+import {AddTodoAT, RemoveTodoAT} from "./todolists-reducer";
 
 
 export  type RemoveTaskAT = {
@@ -18,7 +18,7 @@ export type ChengeTaskStatus = {
     type: "CHENGE-TASK-STATUS",
     idTodo: string,
     idTask: string,
-    cheked:boolean
+    cheked: boolean
 }
 export type ChengeTaskName = {
     type: "CHENGE-TASK-NAME",
@@ -38,7 +38,7 @@ export type ChengeTaskName = {
 //     id:string
 // }
 //
-type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT
+type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT | AddTodoAT
 
 export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTasksType => {
     switch (action.type) {
@@ -89,6 +89,11 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
             delete stateCope[action.id]
             return stateCope
         }
+        case "Add-Todo": {
+            const statyCope ={...state}
+            statyCope[action.TodolistId]=[]
+            return statyCope
+        }
         default :
             throw new Error("I dont`t understand that action type")
     }
@@ -99,8 +104,8 @@ export const RemoveTaskAC = (idTodo: string, idTask: string): RemoveTaskAT => {
 export const AddTaskAC = (idTodo: string, title: string): AddTaskAT => {
     return {type: "Add-Task", idTodo, title}
 }
-export const ChengeTaskCheckedAC = (idTodo: string, idTask: string, cheked:boolean): ChengeTaskStatus => {
-    return {type: "CHENGE-TASK-STATUS", idTodo, idTask,cheked}
+export const ChengeTaskCheckedAC = (idTodo: string, idTask: string, cheked: boolean): ChengeTaskStatus => {
+    return {type: "CHENGE-TASK-STATUS", idTodo, idTask, cheked}
 }
 export const ChengeTaskTitleAC = (idTodo: string, idTask: string, name: string): ChengeTaskName => {
     return {type: "CHENGE-TASK-NAME", idTodo, idTask, name}
