@@ -1,7 +1,7 @@
 import {FilterType, TodolistType, TodoTasksType} from "../App";
-import {v4} from "uuid";
+import {v1 as uuidv4, v4} from "uuid";
 import {TaskType} from "../Todolists";
-import {AddTodoAT, RemoveTodoAT} from "./todolists-reducer";
+import {AddTodoAT, RemoveTodoAT, todolistId1, todolistId2} from "./todolists-reducer";
 
 
 export  type RemoveTaskAT = {
@@ -39,8 +39,21 @@ export type ChengeTaskName = {
 // }
 //
 type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT | AddTodoAT
+const initialState:TodoTasksType={
+    [todolistId1]: [
+        {id: uuidv4(), name: "Frog", checked: false},
+        {id: uuidv4(), name: "Dog", checked: true},
+        {id: uuidv4(), name: "Cat", checked: false},
+        {id: uuidv4(), name: "Bags", checked: true}
+    ],
+    [todolistId2]: [
+        {id: uuidv4(), name: "Leonardo", checked: true},
+        {id: uuidv4(), name: "7 age", checked: false}
+    ]
 
-export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTasksType => {
+}
+
+export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionTypes): TodoTasksType => {
     switch (action.type) {
         case 'Remove-Task': {
             const stateCopy = {...state}
@@ -95,7 +108,7 @@ export const tasksRedusers = (state: TodoTasksType, action: ActionTypes): TodoTa
             return statyCope
         }
         default :
-            throw new Error("I dont`t understand that action type")
+            return state
     }
 }
 export const RemoveTaskAC = (idTodo: string, idTask: string): RemoveTaskAT => {

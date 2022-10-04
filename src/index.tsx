@@ -4,13 +4,19 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AppWhisReducer from "./AppWhisReducer";
+import AppWhisRedux from "./AppWhisRedux";
+import {Provider} from "react-redux";
+import {store} from "./State/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AppWhisReducer/>
+      <Provider store={store}>
+        <AppWhisRedux/>
+      </Provider>
+    {/*<AppWhisReducer/>*/}
     {/*  <App/>*/}
   </React.StrictMode>
 );
