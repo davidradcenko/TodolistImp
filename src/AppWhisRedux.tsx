@@ -65,7 +65,7 @@ function AppWhisRedux() {
         debugger
         const action=AddTodoAC(title)
         dispatch(action)
-        dispatch(action)
+
     }
 
 
