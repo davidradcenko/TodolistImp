@@ -1,5 +1,6 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, EventHandler,KeyboardEvent, KeyboardEventHandler, useState} from "react";
 import Button from "@mui/material/Button";
+
 import {IconButton, TextField} from "@mui/material";
 import {ControlPoint} from "@mui/icons-material";
 
@@ -7,13 +8,15 @@ type AddItemFormType = {
     AddItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemFormType) {
+export const AddItemForm=React.memo((props: AddItemFormType)=> {
+    console.log("AddItemForm is colled")
     let [ButtonAdd, SetButtonAdd] = useState("")
     let [ErrorMesage, SetErrorMessage] = useState<string | null>(null)
 
     const ChengeSetButtonAdd = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         SetButtonAdd(e.currentTarget.value)
         SetErrorMessage(null)
+
     }
     const OnClikOnbutton = (e: string) => {
         if (e.trim() != "") {
@@ -24,9 +27,18 @@ export function AddItemForm(props: AddItemFormType) {
             SetErrorMessage("You need to write something")
         }
     }
+    const OnKeyPres: EventHandler<KeyboardEvent<HTMLInputElement>> =(event)=>{
+        if(ErrorMesage !== null){
+            SetErrorMessage(null)
+        }
+        if (event.charCode == 13) {
+            OnClikOnbutton(ButtonAdd)
+        }
+
+    }
     return (
         <div>
-            <TextField onKeyPress={(e) => {if (e.charCode == 13) {OnClikOnbutton(ButtonAdd)}}}
+            <TextField onKeyPress={OnKeyPres}
                        variant={"outlined"}
                        label={"Type value"}
                        onChange={(e) => {ChengeSetButtonAdd(e)}}
@@ -39,4 +51,4 @@ export function AddItemForm(props: AddItemFormType) {
             {ErrorMesage ? <div>{ErrorMesage}</div> : ''}
         </div>
     )
-}
+})

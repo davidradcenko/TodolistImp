@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useCallback, useReducer, useState} from 'react';
 import {TaskType, Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
 import './App.css';
@@ -61,12 +61,12 @@ function AppWhisRedux() {
     }
 
 
-    function AddTodolistButtonProps (title: string){
+    const AddTodolistButtonProps = useCallback((title: string)=>{
         debugger
         const action=AddTodoAC(title)
         dispatch(action)
 
-    }
+    },[])
 
 
     return (

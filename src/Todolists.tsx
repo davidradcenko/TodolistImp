@@ -5,8 +5,6 @@ import {EditableSpan} from "./EditableSpan";
 import {IconButton, Button, Checkbox} from "@mui/material";
 import {CheckBox, Delete} from "@mui/icons-material";
 
-
-
 export type TaskType = {
     id: string,
     name: string,
@@ -28,7 +26,7 @@ export  type PropsType = {
 }
 
 export function Todolists(props: PropsType) {
-
+console.log("Todolists is called")
     const FilterAll = () => {
         props.FilterChenge("All", props.id)
     }
