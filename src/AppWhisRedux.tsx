@@ -29,36 +29,37 @@ export  type TodoTasksType={
 }
 
 function AppWhisRedux() {
+    console.log("App is called")
     const dispatch=useDispatch()
 
     const TodolistData=useSelector<AppRootState,Array<TodolistType>>(state => state.todolists)
     const tasksObj=useSelector<AppRootState,TodoTasksType>(state => state.tasks)
 
-    function removeTask(id: string, todolistId: string) {
+    const removeTask= useCallback( function (id: string, todolistId: string) {
         dispatch(RemoveTaskAC(todolistId,id))
-    }
-    function AddNewTodoTask(title: string, todolistId: string) {
+    },[])
+    const AddNewTodoTask= useCallback(function (title: string, todolistId: string) {
         dispatch(AddTaskAC(todolistId,title))
-    }
-    const ChengeTitleTodo=(idTodo:string,NewTitle:string)=>{
+    },[])
+    const ChengeTitleTodo= useCallback(function (idTodo:string,NewTitle:string){
 
         dispatch(ChengeTitleTodoAC(idTodo,NewTitle))
-    }
-    const ChengeTaskName=(idTodo:string,idTask:string,NewTitle:string)=>{
+    },[])
+    const ChengeTaskName= useCallback(function (idTodo:string,idTask:string,NewTitle:string){
 
         dispatch(ChengeTaskTitleAC(idTodo,idTask,NewTitle))
-    }
-    function DeleteTodo(id: string) {
+    },[])
+    const DeleteTodo= useCallback(function (id: string) {
         dispatch(RemoveTodoAC(id))
 
-    }
-    function chengeTaskChecked( todolistId: string,id: string,cheked:boolean) {
+    },[])
+    const chengeTaskChecked= useCallback(function ( todolistId: string,id: string,cheked:boolean) {
 
         dispatch(ChengeTaskCheckedAC(id,todolistId,cheked))
-    }
-    function chengeTasksFilter(value: FilterType, todolistId: string) {
+    },[])
+    const chengeTasksFilter = useCallback(function (value: FilterType, todolistId: string) {
         dispatch(ChangeIsdoneTodoAC(value,todolistId))
-    }
+    },[])
 
 
     const AddTodolistButtonProps = useCallback((title: string)=>{
@@ -93,13 +94,10 @@ function AppWhisRedux() {
                 </Grid>
                 <Grid container spacing={10}>
                     {TodolistData.map((tl) => {
+
                         let filtrData = tasksObj[tl.id]
-                        if (tl.isDone == "Completed") {
-                            filtrData = filtrData.filter(e => e.checked == false)
-                        }
-                        if (tl.isDone == "Active") {
-                            filtrData = filtrData.filter(e => e.checked == true)
-                        }
+                        let taskfortodolist=filtrData
+
                         return (
                             <Grid item >
                                 <Paper style={{padding:"10px"}}>
@@ -108,7 +106,7 @@ function AppWhisRedux() {
                                         id={tl.id}
                                         ChengeTitleTodo={ChengeTitleTodo}
                                         ChengeTaskName={ChengeTaskName}
-                                        tasks={filtrData}
+                                        tasks={taskfortodolist}
                                         removeTask={removeTask}
                                         FilterChenge={chengeTasksFilter}
                                         FilterStatus={tl.isDone}

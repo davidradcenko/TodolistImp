@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {FilterType} from "./AppWhisReducer";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -25,31 +25,38 @@ export  type PropsType = {
     FilterStatus: FilterType
 }
 
-export function Todolists(props: PropsType) {
+export const Todolists = React.memo( function (props: PropsType) {
 console.log("Todolists is called")
-    const FilterAll = () => {
-        props.FilterChenge("All", props.id)
-    }
-    const FilterCompleted = () => {
-        props.FilterChenge("Completed", props.id)
-    }
-    const FilterActive = () => {
-        props.FilterChenge("Active", props.id)
-    }
-
-    const addTask = (title: string) => {
+    const addTask = useCallback((title: string) => {
         props.AddNewTodoTask(title, props.id)
+    },[])
+    const removeTodolist=()=>{
+        props.DeleteTodo(props.id)
     }
     const ChegeTitleTodo = (Newtitle: string) => {
         props.ChengeTitleTodo(props.id, Newtitle)
-        debugger
     }
 
+
+
+    const FilterAll =  () => {props.FilterChenge("All", props.id)}
+    const FilterCompleted = ()=> {props.FilterChenge("Completed", props.id)}
+    const FilterActive =  () => {props.FilterChenge("Active", props.id)}
+
+    let TaskForTodolist= props.tasks
+
+    if (props.FilterStatus === "Completed") {
+        TaskForTodolist = props.tasks.filter(e => e.checked == false)
+    }
+    if (props.FilterStatus === "Active") {
+        TaskForTodolist = props.tasks.filter(e => e.checked == true)
+    }
+    debugger;
     return (
         <div className={"todolist"}>
             <h1>
                 <EditableSpan title={props.title} ChengeTaskName={ChegeTitleTodo}/>
-                <IconButton onClick={() => {props.DeleteTodo(props.id)}} >
+                <IconButton onClick={removeTodolist} >
                     <Delete/>
                 </IconButton>
             </h1>
@@ -94,4 +101,4 @@ console.log("Todolists is called")
 
         </div>
     )
-}
+})
