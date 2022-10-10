@@ -37,37 +37,36 @@ function AppWhisRedux() {
 
     const removeTask= useCallback( function (id: string, todolistId: string) {
         dispatch(RemoveTaskAC(todolistId,id))
-    },[])
+    },[dispatch])
     const AddNewTodoTask= useCallback(function (title: string, todolistId: string) {
         dispatch(AddTaskAC(todolistId,title))
-    },[])
+    },[dispatch])
     const ChengeTitleTodo= useCallback(function (idTodo:string,NewTitle:string){
 
         dispatch(ChengeTitleTodoAC(idTodo,NewTitle))
-    },[])
+    },[dispatch])
     const ChengeTaskName= useCallback(function (idTodo:string,idTask:string,NewTitle:string){
 
         dispatch(ChengeTaskTitleAC(idTodo,idTask,NewTitle))
-    },[])
+    },[dispatch])
     const DeleteTodo= useCallback(function (id: string) {
         dispatch(RemoveTodoAC(id))
 
-    },[])
+    },[dispatch])
     const chengeTaskChecked= useCallback(function ( todolistId: string,id: string,cheked:boolean) {
 
         dispatch(ChengeTaskCheckedAC(id,todolistId,cheked))
-    },[])
+    },[dispatch])
     const chengeTasksFilter = useCallback(function (value: FilterType, todolistId: string) {
         dispatch(ChangeIsdoneTodoAC(value,todolistId))
-    },[])
+    },[dispatch])
 
 
     const AddTodolistButtonProps = useCallback((title: string)=>{
-        debugger
         const action=AddTodoAC(title)
         dispatch(action)
 
-    },[])
+    },[dispatch])
 
 
     return (

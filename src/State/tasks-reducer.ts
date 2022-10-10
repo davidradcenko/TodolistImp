@@ -60,7 +60,7 @@ export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionT
             let todo = stateCopy[action.idTodo]
             let n = todo.filter(e => e.id != action.idTask)
             stateCopy[action.idTodo] = n
-            debugger
+
             return {...stateCopy}
         }
         case 'Add-Task': {
@@ -70,32 +70,34 @@ export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionT
             let newTodoTasks = [newTask, ...T]
             //stateCopy[action.idTodo].push(newTask)
             stateCopy[action.idTodo] = newTodoTasks
-            debugger
+
             return stateCopy
         }
         case 'CHENGE-TASK-STATUS': {
-            let StateCopy = {...state}
+            let stateCope= {...state}
+            let Todolisttasks = stateCope[action.idTodo]
+            stateCope[action.idTodo] = Todolisttasks.map(t=>t.id === action.idTask ? {...t,checked:action.cheked} : t)
 
-            let tasks = StateCopy[action.idTodo]
-            let task = tasks.find(t => t.id == action.idTask)
-            if (task) {
-                task.checked = action.cheked
-                // StateCopy[action.idTodo][0] = task
-                debugger
-            }
-            return StateCopy
+            // let task = tasks.find(t => t.id == action.idTask)
+            // if (task) {
+            //     task.checked = action.cheked
+            // }
+            // state[action.idTodo] = [...tasks]
+            return stateCope
         }
         case 'CHENGE-TASK-NAME': {
-            let StateCopy = {...state}
-            let tasks = state[action.idTodo]
-            debugger
-            let task = tasks.find(t => t.id == action.idTask)
-            if (task) {
-                task.name = action.name
-                debugger
-            }
 
-            return StateCopy
+            let stateCope= {...state}
+            let Todolisttasks = stateCope[action.idTodo]
+            stateCope[action.idTodo] = Todolisttasks.map(t=>t.id === action.idTask ? {...t,name:action.name} : t)
+            // let tasks = state[action.idTodo]
+            //
+            // let task = tasks.find(t => t.id == action.idTask)
+            // if (task) {
+            //     task.name = action.name
+            // }
+            // state[action.idTodo]=[...tasks]
+            return stateCope
         }
         case "Remove-Todo": {
             let stateCope = {...state}
