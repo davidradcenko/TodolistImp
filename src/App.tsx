@@ -52,7 +52,7 @@ function App() {
         if(task){
             task.name=NewTitle
             SetTasksObj({...tasksObj})
-            debugger
+
         }
     }
 
