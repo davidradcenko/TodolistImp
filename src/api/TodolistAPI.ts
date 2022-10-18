@@ -10,8 +10,6 @@ const settings = {
 const instance=axios.create({
     baseURL:"https://social-network.samuraijs.com/api/1.1/",
     ...settings,
-
-
 })
 
 export type TodolistAPIType = {
@@ -69,6 +67,9 @@ type updateTaskModelType={
     startDate: string
     deadline: string
 }
+
+
+
 export const TodolistAPI = {
     getTodolists() {
         return instance.get<Array<TodolistAPIType>>('todo-lists');
@@ -89,7 +90,10 @@ export const TodolistAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
     updateTask(tidilistId:string,taskId:string,model:updateTaskModelType){
-        return
+        return instance.put<ResponseType>(`todo-lists/${tidilistId}/tasks/${taskId}`,model);
+    },
+    createTask(todolistId:string,taskTitle:string){
+        return instance.post<ResponseType<TodolistAPIType>>(`todo-lists/${todolistId}/tasks`,{title:taskTitle});
     }
 
 }
