@@ -1,7 +1,7 @@
-import {FilterType, TodolistType, TodoTasksType} from "../App";
+import {TodoTasksType} from "../App";
 import {v1 as uuidv4, v4} from "uuid";
-import {TaskType} from "../Todolists";
 import {AddTodoAT, RemoveTodoAT, todolistId1, todolistId2} from "./todolists-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/TodolistAPI";
 
 
 export  type RemoveTaskAT = {
@@ -18,10 +18,10 @@ export type ChengeTaskStatus = {
     type: "CHENGE-TASK-STATUS",
     idTodo: string,
     idTask: string,
-    cheked: boolean
+    status: TaskStatuses
 }
 export type ChengeTaskName = {
-    type: "CHENGE-TASK-NAME",
+    type: "CHENGE-TASK-TITLE",
     idTodo: string,
     idTask: string,
     name: string
@@ -41,14 +41,14 @@ export type ChengeTaskName = {
 type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT | AddTodoAT
 const initialState:TodoTasksType={
     [todolistId1]: [
-        {id: uuidv4(), name: "Frog", checked: false},
-        {id: uuidv4(), name: "Dog", checked: true},
-        {id: uuidv4(), name: "Cat", checked: false},
-        {id: uuidv4(), name: "Bags", checked: true}
+        {id: uuidv4(), title: "Frog1", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+        {id: uuidv4(), title: "Frog2", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+        {id: uuidv4(), title: "Frog3", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''}
     ],
     [todolistId2]: [
-        {id: uuidv4(), name: "Leonardo", checked: true},
-        {id: uuidv4(), name: "7 age", checked: false}
+        {id: uuidv4(), title: "Frog4", status:TaskStatuses.Completed,todoListId:todolistId2,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+        {id: uuidv4(), title: "Frog5", status:TaskStatuses.Completed,todoListId:todolistId2,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+
     ]
 
 }
@@ -65,7 +65,7 @@ export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionT
         }
         case 'Add-Task': {
             const stateCopy = {...state}
-            const newTask: TaskType = {id: v4(), name: action.title, checked: false}
+            const newTask: TaskType = {id: v4(), title: action.title, status: TaskStatuses.New,addedDate:"",deadline:"",description:"",order:0,priority:TaskPriorities.Low,startDate:"",todoListId:action.idTodo}
             let T = stateCopy[action.idTodo]
             let newTodoTasks = [newTask, ...T]
             //stateCopy[action.idTodo].push(newTask)
@@ -76,7 +76,7 @@ export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionT
         case 'CHENGE-TASK-STATUS': {
             let stateCope= {...state}
             let Todolisttasks = stateCope[action.idTodo]
-            stateCope[action.idTodo] = Todolisttasks.map(t=>t.id === action.idTask ? {...t,checked:action.cheked} : t)
+            stateCope[action.idTodo] = Todolisttasks.map(t=>t.id === action.idTask ? {...t,status:action.status} : t)
 
             // let task = tasks.find(t => t.id == action.idTask)
             // if (task) {
@@ -85,11 +85,11 @@ export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionT
             // state[action.idTodo] = [...tasks]
             return stateCope
         }
-        case 'CHENGE-TASK-NAME': {
+        case 'CHENGE-TASK-TITLE': {
 
             let stateCope= {...state}
             let Todolisttasks = stateCope[action.idTodo]
-            stateCope[action.idTodo] = Todolisttasks.map(t=>t.id === action.idTask ? {...t,name:action.name} : t)
+            stateCope[action.idTodo] = Todolisttasks.map(t=>t.id === action.idTask ? {...t,title:action.name} : t)
             // let tasks = state[action.idTodo]
             //
             // let task = tasks.find(t => t.id == action.idTask)
@@ -119,11 +119,11 @@ export const RemoveTaskAC = (idTodo: string, idTask: string): RemoveTaskAT => {
 export const AddTaskAC = (idTodo: string, title: string): AddTaskAT => {
     return {type: "Add-Task", idTodo, title}
 }
-export const ChengeTaskCheckedAC = (idTodo: string, idTask: string, cheked: boolean): ChengeTaskStatus => {
-    return {type: "CHENGE-TASK-STATUS", idTodo, idTask, cheked}
+export const ChengeTaskCheckedAC = (idTodo: string, status: TaskStatuses, idTask: string): ChengeTaskStatus => {
+    return {type: "CHENGE-TASK-STATUS", idTodo, status, idTask}
 }
 export const ChengeTaskTitleAC = (idTodo: string, idTask: string, name: string): ChengeTaskName => {
-    return {type: "CHENGE-TASK-NAME", idTodo, idTask, name}
+    return {type: "CHENGE-TASK-TITLE", idTodo, idTask, name}
 }
 
 // export const ChengeTitleTodoAC=( id:string,title:string):ChengeTitleTodoAT=>{

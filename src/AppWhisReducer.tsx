@@ -1,5 +1,5 @@
 import React, {useReducer, useState} from 'react';
-import {TaskType, Todolists} from "./Todolists";
+import {Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
@@ -9,18 +9,13 @@ import {Grade} from "@mui/icons-material";
 import {
     AddTodoAC,
     ChangeIsdoneTodoAC,
-    ChengeTitleTodoAC,
+    ChengeTitleTodoAC, FilterType,
     RemoveTodoAC,
     todolistsRedusers
 } from "./State/todolists-reducer";
 import {AddTaskAC, ChengeTaskCheckedAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./State/tasks-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "./api/TodolistAPI";
 
-export type FilterType = "All" | "Completed" | "Active";
-export type TodolistType = {
-    id: string,
-    title: string,
-    isDone: FilterType
-}
 export  type TodoTasksType={
     [key:string]:Array<TaskType>
 }
@@ -30,19 +25,19 @@ function AppWhisReducer() {
     let todolistId2 = uuidv4()
 
     let [TodolistData,dispadchTodo] = useReducer(todolistsRedusers,[
-        {id: todolistId1, title: "Books", isDone: "All"},
-        {id: todolistId2, title: "Pets", isDone: "Active"}
+        {id: todolistId1, title: "Books", filter: "All",order:0,addedDate:''},
+        {id: todolistId2, title: "Pets", filter: "All",order:0,addedDate:''}
     ])
     let [tasksObj,dispadchTasks] = useReducer(tasksRedusers,{
         [todolistId1]: [
-            {id: uuidv4(), name: "Frog", checked: false},
-            {id: uuidv4(), name: "Dog", checked: true},
-            {id: uuidv4(), name: "Cat", checked: false},
-            {id: uuidv4(), name: "Bags", checked: true}
+            {id: uuidv4(), title: "Frog1", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+            {id: uuidv4(), title: "Frog2", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+            {id: uuidv4(), title: "Frog3", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''}
+
         ],
         [todolistId2]: [
-            {id: uuidv4(), name: "Leonardo", checked: true},
-            {id: uuidv4(), name: "7 age", checked: false}
+            {id: uuidv4(), title: "Frog4", status:TaskStatuses.Completed,todoListId:todolistId2,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
+            {id: uuidv4(), title: "Frog5", status:TaskStatuses.Completed,todoListId:todolistId2,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''}
         ]
 
     })
@@ -65,9 +60,9 @@ function AppWhisReducer() {
         dispadchTodo(RemoveTodoAC(id))
 
     }
-    function chengeTaskChecked( todolistId: string,id: string,cheked:boolean) {
+    function chengeTaskChecked( todolistId: string,status:TaskStatuses,id: string) {
 
-        dispadchTasks(ChengeTaskCheckedAC(id,todolistId,cheked))
+        dispadchTasks(ChengeTaskCheckedAC(id,status,todolistId))
     }
     function chengeTasksFilter(value: FilterType, todolistId: string) {
        dispadchTodo(ChangeIsdoneTodoAC(value,todolistId))
@@ -107,11 +102,11 @@ function AppWhisReducer() {
                 <Grid container spacing={10}>
                     {TodolistData.map((tl) => {
                         let filtrData = tasksObj[tl.id]
-                        if (tl.isDone == "Completed") {
-                            filtrData = filtrData.filter(e => e.checked == false)
+                        if (tl.filter == "Completed") {
+                            filtrData = filtrData.filter(e => e.status == TaskStatuses.Completed)
                         }
-                        if (tl.isDone == "Active") {
-                            filtrData = filtrData.filter(e => e.checked == true)
+                        if (tl.filter == "Active") {
+                            filtrData = filtrData.filter(e => e.status == TaskStatuses.New)
                         }
                         return (
                             <Grid item >
@@ -124,7 +119,7 @@ function AppWhisReducer() {
                                         tasks={filtrData}
                                         removeTask={removeTask}
                                         FilterChenge={chengeTasksFilter}
-                                        FilterStatus={tl.isDone}
+                                        FilterStatus={tl.filter}
                                         chengeChecked={chengeTaskChecked}
                                         title={tl.title}
                                         DeleteTodo={DeleteTodo}

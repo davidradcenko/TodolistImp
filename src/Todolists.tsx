@@ -1,16 +1,12 @@
 import React, {useCallback} from "react";
-import {FilterType} from "./AppWhisReducer";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {TaskMap} from "./TaskMap";
+import {TaskStatuses, TaskType} from "./api/TodolistAPI";
+import {FilterType} from "./State/todolists-reducer";
 
-export type TaskType = {
-    id: string,
-    name: string,
-    checked: boolean
-}
 
 export  type PropsType = {
     id: string,
@@ -18,7 +14,7 @@ export  type PropsType = {
     tasks: Array<TaskType>,
     removeTask: (id: string, todolistId: string) => void,
     ChengeTaskName: (idTodo: string, idTask: string, NewTitle: string) => void,
-    chengeChecked: (id: string, todolistId: string,cheked:boolean) => void,
+    chengeChecked: (id: string, status: TaskStatuses, todolistId: string) => void,
     FilterChenge: (param: FilterType, todolistId: string) => void,
     AddNewTodoTask: (title: string, todolistId: string) => void,
     title: string,
@@ -26,38 +22,44 @@ export  type PropsType = {
     FilterStatus: FilterType
 }
 
-export const Todolists = React.memo( function (props: PropsType) {
-console.log("Todolists is called")
+export const Todolists = React.memo(function (props: PropsType) {
+    console.log("Todolists is called")
+
     const addTask = useCallback((title: string) => {
         props.AddNewTodoTask(title, props.id)
-    },[props.AddNewTodoTask,props.id])
-    const removeTodolist=()=>{
+    }, [props.AddNewTodoTask, props.id])
+    const removeTodolist = () => {
         props.DeleteTodo(props.id)
     }
     const ChegeTitleTodo = useCallback((Newtitle: string) => {
         props.ChengeTitleTodo(props.id, Newtitle)
-    },[props.id,props.ChengeTitleTodo])
+    }, [props.id, props.ChengeTitleTodo])
 
 
-
-    const FilterAll =  useCallback(() => {props.FilterChenge("All", props.id)},[])
-    const FilterCompleted = useCallback(()=> {props.FilterChenge("Completed", props.id)},[])
-    const FilterActive =  useCallback( () =>{props.FilterChenge("Active", props.id)},[])
+    const FilterAll = useCallback(() => {
+        props.FilterChenge("All", props.id)
+    }, [])
+    const FilterCompleted = useCallback(() => {
+        props.FilterChenge("Completed", props.id)
+    }, [])
+    const FilterActive = useCallback(() => {
+        props.FilterChenge("Active", props.id)
+    }, [])
 
     let TaskForTodolist = props.tasks
 
     if (props.FilterStatus === "Completed") {
-        TaskForTodolist = props.tasks.filter(e => e.checked == false)
+        TaskForTodolist = props.tasks.filter(e => e.status == TaskStatuses.Completed)
     }
     if (props.FilterStatus === "Active") {
-        TaskForTodolist = props.tasks.filter(e => e.checked == true)
+        TaskForTodolist = props.tasks.filter(e => e.status == TaskStatuses.New)
     }
 
     return (
         <div className={"todolist"}>
             <h1>
                 <EditableSpan title={props.title} ChengeTaskName={ChegeTitleTodo}/>
-                <IconButton onClick={removeTodolist} >
+                <IconButton onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>
             </h1>
@@ -65,23 +67,25 @@ console.log("Todolists is called")
             <AddItemForm key={props.id} AddItem={addTask}/>
             <div>
                 {
-                    TaskForTodolist.map(e => <TaskMap TodolistId={props.id}
-                                                      ChengeTaskName={props.ChengeTaskName}
-                                                      removeTask={props.removeTask}
-                                                      chengeChecked={props.chengeChecked}
-                                                      task={e}
-                                                      key={e.id}/>)
+                    TaskForTodolist.map(e => <TaskMap
+                        key={e.id}
+                        TodolistId={props.id}
+                        ChengeTaskName={props.ChengeTaskName}
+                        removeTask={props.removeTask}
+                        chengeChecked={props.chengeChecked}
+                        task={e}
+                    />)
                 }
             </div>
-            <Button variant={props.FilterStatus == "All" ? "contained" : "outlined"}  onClick={() => {
+            <Button variant={props.FilterStatus == "All" ? "contained" : "outlined"} onClick={() => {
                 FilterAll()
             }}>All
             </Button>
-            <Button variant={props.FilterStatus == "Active" ? "contained" : "outlined"}  onClick={() => {
+            <Button variant={props.FilterStatus == "Active" ? "contained" : "outlined"} onClick={() => {
                 FilterActive()
             }}>Active
             </Button>
-            <Button variant={props.FilterStatus == "Completed" ? "contained" : "outlined"}  onClick={() => {
+            <Button variant={props.FilterStatus == "Completed" ? "contained" : "outlined"} onClick={() => {
                 FilterCompleted()
             }}>Completed
             </Button>

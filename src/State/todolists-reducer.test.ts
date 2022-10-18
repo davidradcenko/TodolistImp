@@ -1,15 +1,21 @@
 import {v1} from "uuid";
-import {FilterType, TodolistType} from "../App";
-import {AddTodoAC, ChengeTitleTodoAC, RemoveTodoAC, todolistsRedusers} from "./todolists-reducer";
+import {
+    AddTodoAC,
+    ChengeTitleTodoAC,
+    FilterType,
+    RemoveTodoAC,
+    TodolistDomainType,
+    todolistsRedusers
+} from "./todolists-reducer";
 
 
 test('Remove todo from state',()=>{
     let todo1=v1()
     let todo2=v1()
 
-    let todo:Array<TodolistType>= [
-        {id:todo1,title:"Me",isDone:"All"},
-        {id:todo2,title:"No me",isDone:"Active"}
+    let todo:Array<TodolistDomainType>= [
+        {id: todo1, title: "Me", filter: "All",order:0,addedDate:''},
+        {id: todo2, title: "No me", filter: "Active",order:0,addedDate:''}
     ]
 
     const result= todolistsRedusers(todo,RemoveTodoAC(todo2))
@@ -21,9 +27,9 @@ test('Add todo in state',()=>{
     let todo1=v1()
     let todo2=v1()
 
-    let todo:Array<TodolistType>= [
-        {id:todo1,title:"Me",isDone:"All"},
-        {id:todo2,title:"No me",isDone:"Active"}
+    let todo:Array<TodolistDomainType>= [
+        {id: todo1, title: "Me", filter: "All",order:0,addedDate:''},
+        {id: todo2, title: "No me", filter: "Active",order:0,addedDate:''}
     ]
 let newTitle="Yes it`s me"
     const result= todolistsRedusers(todo,AddTodoAC(newTitle))
@@ -35,9 +41,9 @@ test('Chenge title in todolist',()=>{
     let todo1=v1()
     let todo2=v1()
 
-    let todo:Array<TodolistType>= [
-        {id:todo1,title:"Me",isDone:"All"},
-        {id:todo2,title:"No me",isDone:"Active"}
+    let todo:Array<TodolistDomainType>= [
+        {id: todo1, title: "Me", filter: "All",order:0,addedDate:''},
+        {id: todo2, title: "No me", filter: "Active",order:0,addedDate:''}
     ]
     let newTitle="Yes it`s me"
 
@@ -51,14 +57,14 @@ test('Chenge isDone in todolist',()=>{
     let todo1=v1()
     let todo2=v1()
 
-    let todo:Array<TodolistType>= [
-        {id:todo1,title:"Me",isDone:"All"},
-        {id:todo2,title:"No me",isDone:"Active"}
+    let todo:Array<TodolistDomainType>= [
+        {id: todo1, title: "Me", filter: "All",order:0,addedDate:''},
+        {id: todo2, title: "No me", filter: "Active",order:0,addedDate:''}
     ]
     let newIsdone:FilterType="Completed"
 
     const result= todolistsRedusers(todo,{type:"Change-Isdone-Todo",isDone:newIsdone,id:todo1})
 
-    expect(result[0].isDone).toBe("Completed")
+    expect(result[0].filter).toBe("Completed")
     expect(result[0].id).toBe(todo1)
 })
