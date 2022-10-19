@@ -13,7 +13,14 @@ import {
     RemoveTodoAC, SetTodolistAC, TodolistDomainType,
     todolistsRedusers
 } from "./State/todolists-reducer";
-import {AddTaskAC, ChengeTaskCheckedAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./State/tasks-reducer";
+import {
+    AddTaskAC, addTaskTC,
+    ChengeTaskCheckedAC,
+    ChengeTaskTitleAC,
+    deleteTasksTC,
+    RemoveTaskAC,
+    tasksRedusers
+} from "./State/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "./State/store";
 import {TaskStatuses, TaskType, TodolistAPI} from "./api/TodolistAPI";
@@ -31,10 +38,10 @@ function AppWhisRedux() {
     const tasksObj=useSelector<RootState,TodoTasksType>(state => state.tasks)
 
     const removeTask= useCallback( function (id: string, todolistId: string) {
-        dispatch(RemoveTaskAC(todolistId,id))
+     dispatch(deleteTasksTC(todolistId,id))
     },[dispatch])
     const AddNewTodoTask= useCallback(function (title: string, todolistId: string) {
-        dispatch(AddTaskAC(todolistId,title))
+        dispatch(addTaskTC(todolistId,title))
     },[dispatch])
     const ChengeTitleTodo= useCallback(function (idTodo:string,NewTitle:string){
 

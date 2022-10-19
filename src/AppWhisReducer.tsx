@@ -46,7 +46,7 @@ function AppWhisReducer() {
            dispadchTasks(RemoveTaskAC(todolistId,id))
     }
     function AddNewTodoTask(title: string, todolistId: string) {
-        dispadchTasks(AddTaskAC(todolistId,title))
+        //dispadchTasks(AddTaskAC(todolistId,title))
     }
     const ChengeTitleTodo=(idTodo:string,NewTitle:string)=>{
 

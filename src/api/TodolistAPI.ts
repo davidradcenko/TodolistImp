@@ -112,7 +112,7 @@ export const TodolistAPI = {
         return instance.put<ResponseType>(`todo-lists/${tidilistId}/tasks/${taskId}`,model);
     },
     createTask(todolistId:string,taskTitle:string){
-        return instance.post<ResponseType<TodolistAPIType>>(`todo-lists/${todolistId}/tasks`,{title:taskTitle});
+        return instance.post<ResponseType<{ item:TaskType }>>(`todo-lists/${todolistId}/tasks`,{title:taskTitle});
     }
 
 }
