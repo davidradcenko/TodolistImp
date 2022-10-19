@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
@@ -6,6 +6,8 @@ import {Delete} from "@mui/icons-material";
 import {TaskMap} from "./TaskMap";
 import {TaskStatuses, TaskType} from "./api/TodolistAPI";
 import {FilterType} from "./State/todolists-reducer";
+import {useAppDispatch} from "./State/store";
+import {fetchTasksTC} from "./State/tasks-reducer";
 
 
 export  type PropsType = {
@@ -24,6 +26,7 @@ export  type PropsType = {
 
 export const Todolists = React.memo(function (props: PropsType) {
     console.log("Todolists is called")
+    const dispatch=useAppDispatch()
 
     const addTask = useCallback((title: string) => {
         props.AddNewTodoTask(title, props.id)
@@ -46,8 +49,12 @@ export const Todolists = React.memo(function (props: PropsType) {
         props.FilterChenge("Active", props.id)
     }, [])
 
-    let TaskForTodolist = props.tasks
+    useEffect(()=>{
+        dispatch(fetchTasksTC(props.id))
+    },[])
 
+
+    let TaskForTodolist = props.tasks
     if (props.FilterStatus === "Completed") {
         TaskForTodolist = props.tasks.filter(e => e.status == TaskStatuses.Completed)
     }

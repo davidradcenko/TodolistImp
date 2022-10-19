@@ -1,7 +1,8 @@
 import {TodoTasksType} from "../App";
 import {v1 as uuidv4, v4} from "uuid";
-import {AddTodoAT, RemoveTodoAT, todolistId1, todolistId2} from "./todolists-reducer";
-import {TaskPriorities, TaskStatuses, TaskType} from "../api/TodolistAPI";
+import {AddTodoAT, RemoveTodoAT, SetTodolistAC, SetTodolistAT, todolistId1, todolistId2} from "./todolists-reducer";
+import {TaskPriorities, TaskStatuses, TaskType, TodolistAPI} from "../api/TodolistAPI";
+import {Dispatch} from "redux";
 
 
 export  type RemoveTaskAT = {
@@ -27,18 +28,13 @@ export type ChengeTaskName = {
     name: string
 
 }
-// export type ChengeTitleTodoAT={
-//     type:"ChengeTitle-Todo",
-//     id:string,
-//     title:string
-// }
-// export type ChangeIsdoneTodoAT={
-//     type:"Change-Isdone-Todo",
-//     isDone:FilterType
-//     id:string
-// }
-//
-type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT | AddTodoAT
+export type SetTaskAT={
+    type:"SET-TASK"
+    todolistId: string
+    tasks:Array<TaskType>
+
+}
+type ActionTypes = RemoveTaskAT | AddTaskAT | ChengeTaskStatus | ChengeTaskName | RemoveTodoAT | AddTodoAT | SetTodolistAT | SetTaskAT
 const initialState:TodoTasksType={
     [todolistId1]: [
         {id: uuidv4(), title: "Frog1", status:TaskStatuses.Completed,todoListId:todolistId1,startDate:'',deadline:'',addedDate:'',order:0,priority:TaskPriorities.Low,description:''},
@@ -109,6 +105,18 @@ export const tasksRedusers = (state: TodoTasksType=initialState, action: ActionT
             statyCope[action.TodolistId]=[]
             return statyCope
         }
+        case "SET-TODOLIST":{
+            const statyCope ={...state}
+            action.todolist.forEach(tl=>{
+                statyCope[tl.id]=[]
+            })
+            return statyCope
+        }
+        case "SET-TASK":{
+            const statyCope ={...state}
+            statyCope[action.todolistId]=action.tasks
+            return statyCope
+        }
         default :
             return state
     }
@@ -125,10 +133,15 @@ export const ChengeTaskCheckedAC = (idTodo: string, status: TaskStatuses, idTask
 export const ChengeTaskTitleAC = (idTodo: string, idTask: string, name: string): ChengeTaskName => {
     return {type: "CHENGE-TASK-TITLE", idTodo, idTask, name}
 }
-
-// export const ChengeTitleTodoAC=( id:string,title:string):ChengeTitleTodoAT=>{
-//     return {type:"ChengeTitle-Todo",id,title}
-// }
-// export const ChangeIsdoneTodoAC=(  isDone:FilterType,id:string):ChangeIsdoneTodoAT=>{
-//     return {type:"Change-Isdone-Todo", isDone,id}
-// }
+export const SetTasksAC=(todolistId:string,tasks:Array<TaskType>):SetTaskAT=>{
+    return {type:"SET-TASK",todolistId,tasks}
+}
+// thunks
+export const fetchTasksTC=(todolistId:string)=>{
+    return (dispatch:Dispatch)=>{
+        TodolistAPI.getTasks(todolistId).then(res=>{
+            const tasks=res.data.items
+            dispatch(SetTasksAC(todolistId,tasks))
+        })
+    }
+}

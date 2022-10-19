@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import {Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
 import './App.css';
@@ -9,14 +9,14 @@ import {Grade} from "@mui/icons-material";
 import {
     AddTodoAC,
     ChangeIsdoneTodoAC,
-    ChengeTitleTodoAC, FilterType,
-    RemoveTodoAC, TodolistDomainType,
+    ChengeTitleTodoAC, fetchTodolistTC, FilterType,
+    RemoveTodoAC, SetTodolistAC, TodolistDomainType,
     todolistsRedusers
 } from "./State/todolists-reducer";
 import {AddTaskAC, ChengeTaskCheckedAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./State/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./State/store";
-import {TaskStatuses, TaskType} from "./api/TodolistAPI";
+import {RootState, useAppDispatch} from "./State/store";
+import {TaskStatuses, TaskType, TodolistAPI} from "./api/TodolistAPI";
 
 
 export  type TodoTasksType={
@@ -25,10 +25,10 @@ export  type TodoTasksType={
 
 function AppWhisRedux() {
     console.log("App is called")
-    const dispatch=useDispatch()
+    const dispatch=useAppDispatch()
 
-    const TodolistData=useSelector<AppRootState,Array<TodolistDomainType>>(state => state.todolists)
-    const tasksObj=useSelector<AppRootState,TodoTasksType>(state => state.tasks)
+    const TodolistData=useSelector<RootState,Array<TodolistDomainType>>(state => state.todolists)
+    const tasksObj=useSelector<RootState,TodoTasksType>(state => state.tasks)
 
     const removeTask= useCallback( function (id: string, todolistId: string) {
         dispatch(RemoveTaskAC(todolistId,id))
@@ -59,6 +59,10 @@ function AppWhisRedux() {
         dispatch(action)
 
     },[dispatch])
+//call thunks
+  useEffect(()=>{
+      dispatch(fetchTodolistTC())
+  },[])
 
 
     return (
