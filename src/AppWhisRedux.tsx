@@ -1,29 +1,22 @@
-import React, {useCallback, useEffect, useReducer, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Todolists} from "./Todolists";
-import {v1 as uuidv4} from 'uuid';
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
-import {AppBar, Box, Container, IconButton, Typography, Button, Toolbar, Grid, Paper} from "@mui/material";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import {Grade} from "@mui/icons-material";
 import {
-    AddTodoAC,
+    addTodolistTC,
     ChangeIsdoneTodoAC,
-    ChengeTitleTodoAC, fetchTodolistTC, FilterType,
-    RemoveTodoAC, SetTodolistAC, TodolistDomainType,
-    todolistsRedusers
+    ChehgeTitleTodolistTC,
+    deleteTodolistTC,
+    fetchTodolistTC,
+    FilterType,
+    TodolistDomainType
 } from "./State/todolists-reducer";
-import {
-    AddTaskAC, addTaskTC,
-    ChengeTaskCheckedAC,
-    ChengeTaskTitleAC,
-    deleteTasksTC,
-    RemoveTaskAC,
-    tasksRedusers
-} from "./State/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
+import {addTaskTC, deleteTasksTC, updateTaskStatusTC} from "./State/tasks-reducer";
+import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "./State/store";
-import {TaskStatuses, TaskType, TodolistAPI} from "./api/TodolistAPI";
+import {TaskStatuses, TaskType} from "./api/TodolistAPI";
 
 
 export  type TodoTasksType={
@@ -44,26 +37,22 @@ function AppWhisRedux() {
         dispatch(addTaskTC(todolistId,title))
     },[dispatch])
     const ChengeTitleTodo= useCallback(function (idTodo:string,NewTitle:string){
-
-        dispatch(ChengeTitleTodoAC(idTodo,NewTitle))
+        dispatch(ChehgeTitleTodolistTC(idTodo,NewTitle))
     },[dispatch])
-    const ChengeTaskTitle= useCallback(function (idTodo:string,idTask:string,NewTitle:string){
-        dispatch(ChengeTaskTitleAC(idTodo,idTask,NewTitle))
+    const ChengeTaskTitle= useCallback(function (idTodo:string,idTask:string,title:string){
+        dispatch(updateTaskStatusTC(idTodo, {title},idTask))
     },[dispatch])
     const DeleteTodo= useCallback(function (id: string) {
-        dispatch(RemoveTodoAC(id))
-
+        dispatch(deleteTodolistTC(id))
     },[dispatch])
-    const chengeTaskChecked= useCallback(function ( todolistId: string,status:TaskStatuses,id: string) {
-        dispatch(ChengeTaskCheckedAC(id,status,todolistId))
-        debugger
+    const chengeTaskChecked= useCallback(function ( idTask: string,status:TaskStatuses,idTodo: string) {
+        dispatch(updateTaskStatusTC(idTodo, {status},idTask))
     },[dispatch])
     const chengeTasksFilter = useCallback(function (value: FilterType, todolistId: string) {
         dispatch(ChangeIsdoneTodoAC(value,todolistId))
     },[dispatch])
     const AddTodolistButtonProps = useCallback((title: string)=>{
-        const action=AddTodoAC(title)
-        dispatch(action)
+        dispatch(addTodolistTC(title))
 
     },[dispatch])
 //call thunks

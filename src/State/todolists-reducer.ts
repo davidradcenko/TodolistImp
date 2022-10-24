@@ -9,8 +9,7 @@ export  type RemoveTodoAT = {
 }
 export  type AddTodoAT = {
     type: "Add-Todo",
-    title: string,
-    TodolistId: string
+    NewTodo: TodolistAPIType
 }
 export type ChengeTitleTodoAT = {
     type: "ChengeTitle-Todo",
@@ -45,13 +44,8 @@ export const todolistsRedusers = (state: Array<TodolistDomainType> = initialStat
             return state.filter(e => e.id != action.id)
         }
         case  'Add-Todo': {
-            return [...state, {
-                id: action.TodolistId,
-                title: action.title,
-                filter: "All",
-                addedDate: '',
-                order: 0
-            }]
+            const DomainTodo:TodolistDomainType={...action.NewTodo,filter:"All"}
+            return [DomainTodo,...state]
         }
         case 'ChengeTitle-Todo': {
             const stateCope = [...state]
@@ -83,8 +77,8 @@ export const todolistsRedusers = (state: Array<TodolistDomainType> = initialStat
 export const RemoveTodoAC = (id: string): RemoveTodoAT => {
     return {type: "Remove-Todo", id}
 }
-export const AddTodoAC = (title: string): AddTodoAT => {
-    return {type: "Add-Todo", title, TodolistId: v4()}
+export const AddTodoAC = (NewTodo: TodolistAPIType): AddTodoAT => {
+    return {type: "Add-Todo", NewTodo}
 }
 export const ChengeTitleTodoAC = (id: string, title: string): ChengeTitleTodoAT => {
     return {type: "ChengeTitle-Todo", id, title}
@@ -103,4 +97,24 @@ export const fetchTodolistTC=()=>{
         })
     }
 }
-
+export const deleteTodolistTC=(IdTodo:string)=>{
+    return (dispatch:Dispatch)=>{
+        TodolistAPI.deleteTodolist(IdTodo).then(res=>{
+            dispatch(RemoveTodoAC(IdTodo))
+        })
+    }
+}
+export const addTodolistTC=(title:string)=>{
+    return (dispatch:Dispatch)=>{
+        TodolistAPI.createTodolist(title).then(res=>{
+            dispatch(AddTodoAC(res.data.data.item))
+        })
+    }
+}
+export const ChehgeTitleTodolistTC=(id: string, title: string)=>{
+    return (dispatch:Dispatch)=>{
+        TodolistAPI.updateTodolist(id, title).then(res=>{
+            dispatch(ChengeTitleTodoAC(id, title))
+        })
+    }
+}

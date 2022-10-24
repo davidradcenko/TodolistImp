@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import AppWhisReducer from "./AppWhisReducer";
 import AppWhisRedux from "./AppWhisRedux";
 import {Provider} from "react-redux";
 import {store} from "./State/store";

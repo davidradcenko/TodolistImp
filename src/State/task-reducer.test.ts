@@ -1,5 +1,5 @@
 import {TodoTasksType} from "../App";
-import {AddTaskAC, ChengeTaskCheckedAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./tasks-reducer";
+import {AddTaskAC, updateTaskAC, ChengeTaskTitleAC, RemoveTaskAC, tasksRedusers} from "./tasks-reducer";
 import {RemoveTodoAC} from "./todolists-reducer";
 import {v1 as uuidv4} from "uuid";
 import {TaskPriorities, TaskStatuses} from "../api/TodolistAPI";
@@ -56,7 +56,7 @@ test("change task isDone",()=>{
 
         ]
     }
-    let result= tasksRedusers(task,ChengeTaskCheckedAC("todolistId1",TaskStatuses.New, "0"))
+    let result= tasksRedusers(task,updateTaskAC("todolistId1",TaskStatuses.New, "0"))
     expect(result['todolistId1'][0].status).toBe(TaskStatuses.New)
     expect(result['todolistId1'][0].title).toBe("Frog1")
 })

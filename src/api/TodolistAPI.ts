@@ -78,11 +78,11 @@ type GetTaskRespons = {
     items:TaskType[]
 
 }
-type updateTaskModelType={
+export type updateTaskModelType={
     title: string
     description: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
 }
