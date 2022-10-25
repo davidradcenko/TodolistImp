@@ -3,7 +3,7 @@ import {Todolists} from "./Todolists";
 import {v1 as uuidv4} from 'uuid';
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {TaskPriorities, TaskStatuses, TaskType} from "./api/TodolistAPI";
 import {FilterType, TodolistDomainType} from "./State/todolists-reducer";
@@ -123,6 +123,7 @@ function App() {
                         </Typography>
                         <Button color="inherit">Login</Button>
                     </Toolbar>
+                <LinearProgress color="secondary" />
                 </AppBar>
             <Container fixed>
                 <Grid container style={{padding:"20px 0px 20px 0px"}}>
@@ -161,6 +162,7 @@ function App() {
                     </Grid>
             </Container>
         </div>
+
     );
 }
 

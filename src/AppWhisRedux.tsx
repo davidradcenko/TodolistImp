@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {Todolists} from "./Todolists";
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {
     addTodolistTC,
@@ -17,6 +17,7 @@ import {addTaskTC, deleteTasksTC, updateTaskStatusTC} from "./State/tasks-reduce
 import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "./State/store";
 import {TaskStatuses, TaskType} from "./api/TodolistAPI";
+import {CustomizedSnackbars} from "./ErrorSnakBar";
 
 
 export  type TodoTasksType={
@@ -24,7 +25,7 @@ export  type TodoTasksType={
 }
 
 function AppWhisRedux() {
-    console.log("App is called")
+    const status=useSelector<RootState,string | null>(state => state.app.status)
     const dispatch=useAppDispatch()
 
     const TodolistData=useSelector<RootState,Array<TodolistDomainType>>(state => state.todolists)
@@ -78,6 +79,7 @@ function AppWhisRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                { status === 'loading' &&  <LinearProgress color="secondary"/>}
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding:"20px 0px 20px 0px"}}>
@@ -112,6 +114,7 @@ function AppWhisRedux() {
                     })}
                 </Grid>
             </Container>
+            <CustomizedSnackbars/>
         </div>
     );
 }
