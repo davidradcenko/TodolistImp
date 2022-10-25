@@ -89,7 +89,7 @@ function AppWhisRedux() {
                     {TodolistData.map((tl) => {
 
                         let filtrData = tasksObj[tl.id]
-                        let taskfortodolist=filtrData
+                         let taskfortodolist=filtrData
 
                         return (
                             <Grid key={tl.id} item >
