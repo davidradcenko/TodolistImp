@@ -5,6 +5,7 @@ import {TaskPriorities, TaskStatuses, TaskType, TodolistAPI, updateTaskModelType
 import {Dispatch} from "redux";
 import {RootState} from "./store";
 import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from "./app-reducer";
+import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
 
 
 const initialState: TodoTasksType = {
@@ -177,18 +178,16 @@ export const addTaskTC = (todolistId: string, title: string) => {
                 dispatch(AddTaskAC(task))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages.length) {
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                }else {
-                    dispatch(setAppErrorAC("Some error occurred"))
-                }
-                dispatch(setAppStatusAC('failed'))
+                handelServerAppError(res.data,dispatch)
             }
         })
+            .catch((error)=>{
+                handelServerNetworkError(error,dispatch)
+            })
     }
 }
 export const updateTaskStatusTC = (idTodo: string, domainmodel: updateDomainTaskModelType, idTask: string) => {
-    return (dispatch: Dispatch<ActionTypes>, getState: () => RootState) => {
+    return (dispatch: Dispatch<ActionTypes| SetAppErrorActionType | SetAppStatusActionType>, getState: () => RootState) => {
         const state = getState()
         const task = state.tasks[idTodo].find(t => t.id === idTask)
         if (!task) {
@@ -204,8 +203,15 @@ export const updateTaskStatusTC = (idTodo: string, domainmodel: updateDomainTask
             ...domainmodel
         }
         TodolistAPI.updateTask(idTodo, idTask, apimodel).then(res => {
-            dispatch(updateTaskAC(idTodo, domainmodel, idTask))
+            if (res.data.resultCode===0) {
+                dispatch(updateTaskAC(idTodo, domainmodel, idTask))
+            }else {
+                handelServerAppError(res.data,dispatch)
+            }
         })
+            .catch((error)=>{
+                handelServerNetworkError(error,dispatch)
+            })
     }
 }
 
@@ -218,7 +224,7 @@ export type updateDomainTaskModelType = {
     startDate?: string
     deadline?: string
 }
-type ActionTypes =
+export type ActionTypes =
     | ReturnType<typeof AddTaskAC>
     | ReturnType<typeof updateTaskAC>
     | ReturnType<typeof SetTasksAC>
