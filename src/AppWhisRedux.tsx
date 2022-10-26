@@ -95,16 +95,14 @@ function AppWhisRedux() {
                             <Grid key={tl.id} item >
                                 <Paper style={{padding:"10px"}}>
                                     <Todolists
+                                        todolist={tl}
                                         key={tl.id}
-                                        id={tl.id}
                                         ChengeTitleTodo={ChengeTitleTodo}
                                         ChengeTaskName={ChengeTaskTitle}
                                         tasks={taskfortodolist}
                                         removeTask={removeTask}
                                         FilterChenge={chengeTasksFilter}
-                                        FilterStatus={tl.filter}
                                         chengeChecked={chengeTaskChecked}
-                                        title={tl.title}
                                         DeleteTodo={DeleteTodo}
                                         AddNewTodoTask={AddNewTodoTask}/>
                                 </Paper>

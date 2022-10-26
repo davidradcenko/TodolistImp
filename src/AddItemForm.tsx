@@ -5,7 +5,8 @@ import {IconButton, TextField} from "@mui/material";
 import {ControlPoint} from "@mui/icons-material";
 
 type AddItemFormType = {
-    AddItem: (title: string) => void
+    AddItem: (title: string) => void,
+    disabled?: boolean
 }
 
 export const AddItemForm=React.memo((props: AddItemFormType)=> {

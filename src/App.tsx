@@ -142,16 +142,14 @@ function App() {
                     <Grid item >
                         <Paper style={{padding:"10px"}}>
                             <Todolists
+                                todolist={tl}
                                 key={tl.id}
-                                id={tl.id}
                                 ChengeTitleTodo={ChengeTitleTodo}
                                 ChengeTaskName={ChengeTaskName}
                                 tasks={filtrData}
                                 removeTask={removeTask}
                                 FilterChenge={chengeFilter}
-                                FilterStatus={tl.filter}
                                 chengeChecked={chengeChecked}
-                                title={tl.title}
                                 DeleteTodo={DeleteTodo}
                                 AddNewTodoTask={AddNewTodoTask}/>
                         </Paper>

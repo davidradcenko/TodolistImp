@@ -40,6 +40,9 @@ export const todolistsRedusers = (state: Array<TodolistDomainType> = initialStat
                 return {...tl, filter:"All",entityStatus:'idle'}
             })
         }
+        case 'CHENGE-TODOLIST-ENTITY-STATUS':{
+            return state.map(tl=>tl.id===action.id ? {...tl,entityStatus:action.status} : tl)
+        }
         default :
             return state
     }
@@ -51,6 +54,7 @@ export const AddTodoAC = (NewTodo: TodolistAPIType) =>({type: "Add-Todo", NewTod
 export const ChengeTitleTodoAC = (id: string, title: string) => ({type: "ChengeTitle-Todo", id, title}) as const
 export const ChangeIsdoneTodoAC = (isDone: FilterType, id: string) =>({type: "Change-Isdone-Todo", isDone, id})as const
 export const SetTodolistAC = (todolist: Array<TodolistAPIType>) => ({type: "SET-TODOLIST", todolist}) as const
+export const chengeTodolistEntityStatusAC = (id: string, status: RequestStatusType) => ({type: "CHENGE-TODOLIST-ENTITY-STATUS",id,status}) as const
 
 // thunks
 export const fetchTodolistTC=()=>{
@@ -63,9 +67,12 @@ export const fetchTodolistTC=()=>{
     }
 }
 export const deleteTodolistTC=(IdTodo:string)=>{
-    return (dispatch:Dispatch<ActionTypes>)=>{
+    return (dispatch:Dispatch<ActionTypes| SetAppStatusActionType>)=>{
+        dispatch(setAppStatusAC('loading'))
+        dispatch(chengeTodolistEntityStatusAC(IdTodo,'loading'))
         TodolistAPI.deleteTodolist(IdTodo).then(res=>{
             dispatch(RemoveTodoAC(IdTodo))
+            dispatch(setAppStatusAC('succeeded'))
         })
     }
 }
@@ -94,6 +101,7 @@ type ActionTypes =
     | ReturnType<typeof ChengeTitleTodoAC >
     | ReturnType<typeof ChangeIsdoneTodoAC >
     | ReturnType<typeof SetTodolistAC>
+    | ReturnType<typeof chengeTodolistEntityStatusAC>
 
 export type TodolistDomainType = TodolistAPIType & {
     filter: FilterType,
