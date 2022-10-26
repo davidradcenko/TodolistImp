@@ -74,8 +74,8 @@ function App() {
     let todolistId2 = uuidv4()
 
     let [TodolistData, SetTodolistData] = useState<Array<TodolistDomainType>>([
-        {id: todolistId1, title: "Books", filter: "All",order:0,addedDate:''},
-        {id: todolistId2, title: "Pets", filter: "All",order:0,addedDate:''}
+        {id: todolistId1, title: "Books", filter: "All",order:0,addedDate:'',entityStatus:"idle"},
+        {id: todolistId2, title: "Pets", filter: "All",order:0,addedDate:'',entityStatus:"idle"}
     ])
     let [tasksObj, SetTasksObj] = useState<TodoTasksType>({
         [todolistId1]: [
@@ -100,7 +100,7 @@ function App() {
     }
     const AddTodolistButtonProps = (title: string) => {
         let generatId = uuidv4()
-        let todolist: TodolistDomainType =  {id: generatId, title: title, filter: "All",order:0,addedDate:''}
+        let todolist: TodolistDomainType =  {id: generatId, title: title, filter: "All",order:0,addedDate:'',entityStatus:"idle"}
         SetTodolistData([todolist, ...TodolistData])
         SetTasksObj({
             ...tasksObj,[todolist.id]:[]

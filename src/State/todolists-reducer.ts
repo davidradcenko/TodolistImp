@@ -1,6 +1,7 @@
 import {v1 as uuidv4, v4} from "uuid";
 import {TodolistAPI, TodolistAPIType} from "../api/TodolistAPI";
 import {Dispatch} from "redux";
+import {RequestStatusType, setAppStatusAC, SetAppStatusActionType} from "./app-reducer";
 
 
 export let todolistId1 = uuidv4()
@@ -14,7 +15,7 @@ export const todolistsRedusers = (state: Array<TodolistDomainType> = initialStat
             return state.filter(e => e.id != action.id)
         }
         case  'Add-Todo': {
-            const DomainTodo:TodolistDomainType={...action.NewTodo,filter:"All"}
+            const DomainTodo:TodolistDomainType={...action.NewTodo,filter:"All",entityStatus:'idle'}
             return [DomainTodo,...state]
         }
         case 'ChengeTitle-Todo': {
@@ -36,7 +37,7 @@ export const todolistsRedusers = (state: Array<TodolistDomainType> = initialStat
         }
         case 'SET-TODOLIST': {
             return action.todolist.map(tl => {
-                return {...tl, filter:"All"}
+                return {...tl, filter:"All",entityStatus:'idle'}
             })
         }
         default :
@@ -53,9 +54,11 @@ export const SetTodolistAC = (todolist: Array<TodolistAPIType>) => ({type: "SET-
 
 // thunks
 export const fetchTodolistTC=()=>{
-    return (dispatch:Dispatch<ActionTypes>)=>{
+    return (dispatch:Dispatch<ActionTypes | SetAppStatusActionType>)=>{
+        dispatch(setAppStatusAC('loading'))
         TodolistAPI.getTodolists().then(res=>{
             dispatch(SetTodolistAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
         })
     }
 }
@@ -67,9 +70,11 @@ export const deleteTodolistTC=(IdTodo:string)=>{
     }
 }
 export const addTodolistTC=(title:string)=>{
-    return (dispatch:Dispatch<ActionTypes>)=>{
+    return (dispatch:Dispatch<ActionTypes | SetAppStatusActionType>)=>{
+        dispatch(setAppStatusAC('loading'))
         TodolistAPI.createTodolist(title).then(res=>{
             dispatch(AddTodoAC(res.data.data.item))
+            dispatch(setAppStatusAC('succeeded'))
         })
     }
 }
@@ -91,5 +96,6 @@ type ActionTypes =
     | ReturnType<typeof SetTodolistAC>
 
 export type TodolistDomainType = TodolistAPIType & {
-    filter: FilterType
+    filter: FilterType,
+    entityStatus: RequestStatusType
 }
