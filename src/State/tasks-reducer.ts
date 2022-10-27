@@ -1,4 +1,4 @@
-import {TodoTasksType} from "../App";
+
 import {v1 as uuidv4, v4} from "uuid";
 import {AddTodoAC, RemoveTodoAC, SetTodolistAC, todolistId1, todolistId2} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, TodolistAPI, updateTaskModelType} from "../api/TodolistAPI";
@@ -8,6 +8,9 @@ import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusAction
 import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
 
 
+export type TodoTasksType={
+    [key:string]:Array<TaskType>
+}
 const initialState: TodoTasksType = {
     [todolistId1]: [
         {
