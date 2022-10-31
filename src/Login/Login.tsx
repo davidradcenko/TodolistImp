@@ -2,12 +2,23 @@ import {Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid
 import Button from "@mui/material/Button";
 import {useFormik} from "formik";
 import React from "react";
+import {loginTC} from "./login-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../State/store";
+import {Redirect} from "react-router-dom";
+
+
+
+
 export const Login = () => {
     type FormikErrorType = {
         email?: string
         password?: string
         rememberMe?: boolean
     }
+
+    const dispatch = useDispatch()
+    const isLoginIn = useSelector<RootState, boolean>(state => state.login.isLoginIn)
 
     const formik = useFormik({
         validate: (values) => {
@@ -26,9 +37,12 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: values => {
-            alert(JSON.stringify(values));
+            dispatch(loginTC(values))
         },
     })
+    if (isLoginIn){
+        return <Redirect  to={"/"} />
+    }
     return (
 
         <Box sx={{flexGrow: 1}}>

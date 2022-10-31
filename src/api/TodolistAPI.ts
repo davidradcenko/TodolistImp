@@ -39,6 +39,19 @@ export const TodolistAPI = {
     }
 
 }
+export type LoginParamsType={
+    email:string,
+    password:string,
+    rememberMe:boolean,
+    captcha?:boolean
+}
+export const authAPI={
+    login(data:LoginParamsType){
+        const promise=instance.post<ResponseType<{userId?:number}>>('auth/login',data)
+        return promise
+    }
+}
+
 
 //types
 type GetTaskRespons = {

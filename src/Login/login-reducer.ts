@@ -1,33 +1,53 @@
-import {TaskType, TodolistAPI} from "../api/TodolistAPI";
+import {authAPI, LoginParamsType, TaskType, TodolistAPI} from "../api/TodolistAPI";
 import {Dispatch} from "redux";
+import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from "../State/app-reducer";
+import {handelServerAppError, handelServerNetworkError} from "../utils/error-utils";
+import {updateTaskAC} from "../State/tasks-reducer";
 
 
 
-export type TodoTasksType={
-    [key:string]:Array<TaskType>
+
+const initialState: InitialStateType = {
+    isLoginIn:false
 }
-const initialState: TodoTasksType = {}
 
-export const loginReducer = (state: TodoTasksType = initialState, action: ActionTypes): TodoTasksType => {
+
+export const loginReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-
+        case "login/SET-IS-LOGIN-IN":{
+            return {...state,isLoginIn:action.value}
+        }
         default :
             return state
     }
 }
 
 //action
-export const RemoveTaskAC = (idTodo: string, idTask: string) => ({type: "Remove-Task", idTodo, idTask}) as const
+export const setIsLoginIn = (value:boolean) => ({type: "login/SET-IS-LOGIN-IN", value}) as const
 
 
 // thunks
-export const fetchTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<ActionTypes | SetAppStatusActionType> ) => {
+export const loginTC = (data:LoginParamsType) => {
+    return (dispatch: Dispatch<ActionTypes | SetAppStatusActionType | SetAppErrorActionType>) => {
         dispatch(setAppStatusAC('loading'))
-        TodolistAPI.getTasks(todolistId).then(res => {
-            const tasks = res.data.items
-            dispatch(SetTasksAC(todolistId, tasks))
-            dispatch(setAppStatusAC('succeeded'))
+        authAPI.login(data).then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoginIn(true))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handelServerAppError(res.data, dispatch)
+            }
         })
+            .catch((error) => {
+                handelServerNetworkError(error, dispatch)
+            })
     }
+}
+
+//types
+export type ActionTypes =
+    ReturnType<typeof setIsLoginIn>
+
+type InitialStateType={
+    isLoginIn:boolean
 }
