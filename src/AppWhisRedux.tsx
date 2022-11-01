@@ -22,6 +22,7 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "./State/store";
 import {initializeAppTC} from "./State/app-reducer";
+import {logoutTC} from "./Login/login-reducer";
 
 
 
@@ -32,9 +33,14 @@ export  type TodoTasksType = {
 function AppWhisRedux() {
     const dispatch = useAppDispatch()
     const isInitialized = useSelector<RootState, boolean>(state => state.app.initialized)
+    const isLoginIn = useSelector<RootState, boolean>(state => state.login.isLoginIn)
 
     useEffect(()=>{
         dispatch(initializeAppTC())
+    },[])
+
+    const logoutHandler=useCallback(()=>{
+        dispatch(logoutTC())
     },[])
 
 if (!isInitialized){
@@ -58,7 +64,7 @@ if (!isInitialized){
                         <Typography variant="h6">
                             News
                         </Typography>
-                        <Button color="inherit">Login</Button>
+                        {isLoginIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                     </Toolbar>
                     {status === 'loading' && <LinearProgress color="secondary"/>}
                 </AppBar>

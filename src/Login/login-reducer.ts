@@ -44,6 +44,22 @@ export const loginTC = (data:LoginParamsType) => {
             })
     }
 }
+export const logoutTC=() => {
+    return (dispatch: Dispatch<ActionTypes | SetAppStatusActionType | SetAppErrorActionType>) => {
+        dispatch(setAppStatusAC('loading'))
+        authAPI.logout().then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoginIn(false))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handelServerAppError(res.data, dispatch)
+            }
+        })
+            .catch((error) => {
+                handelServerNetworkError(error, dispatch)
+            })
+    }
+}
 
 //types
 export type ActionTypes =
