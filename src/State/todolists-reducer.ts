@@ -2,8 +2,6 @@ import {v1 as uuidv4, v4} from "uuid";
 import {TodolistAPI, TodolistAPIType} from "../api/TodolistAPI";
 import {Dispatch} from "redux";
 import {RequestStatusType, setAppStatusAC, SetAppStatusActionType} from "./app-reducer";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 import {handelServerNetworkError} from "../utils/error-utils";
 
 

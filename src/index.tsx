@@ -14,8 +14,6 @@ root.render(
       <Provider store={store}>
         <AppWhisRedux/>
       </Provider>
-    {/*<AppWhisReducer/>*/}
-    {/*  <App/>*/}
   </React.StrictMode>
 );
 

@@ -4,8 +4,8 @@ import {useFormik} from "formik";
 import React from "react";
 import {loginTC} from "./login-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../State/store";
-import {Redirect} from "react-router-dom";
+import {RootState, useAppDispatch} from "../State/store";
+import {Navigate} from "react-router-dom";
 
 
 
@@ -17,7 +17,7 @@ export const Login = () => {
         rememberMe?: boolean
     }
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isLoginIn = useSelector<RootState, boolean>(state => state.login.isLoginIn)
 
     const formik = useFormik({
@@ -41,7 +41,7 @@ export const Login = () => {
         },
     })
     if (isLoginIn){
-        return <Redirect  to={"/"} />
+        return <Navigate  to={"/"} />
     }
     return (
 

@@ -16,16 +16,25 @@ import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "./AddItemForm";
 import {Todolists} from "./Todolists";
 import {TodoTasksType} from "./AppWhisRedux";
+import {Navigate} from "react-router-dom";
 
 type TodolistListPropsType = {}
 export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
-
-    const status = useSelector<RootState, string | null>(state => state.app.status)
     const dispatch = useAppDispatch()
 
+    const status = useSelector<RootState, string | null>(state => state.app.status)
+    const isLoggedIn = useSelector<RootState, boolean>(state => state.login.isLoginIn)
     const TodolistData = useSelector<RootState, Array<TodolistDomainType>>(state => state.todolists)
     const tasksObj = useSelector<RootState, TodoTasksType>(state => state.tasks)
 
+
+    //call thunks
+    useEffect(() => {
+        if (!isLoggedIn){
+            return
+        }
+        dispatch(fetchTodolistTC())
+    }, [])
     const removeTask = useCallback(function (id: string, todolistId: string) {
         dispatch(deleteTasksTC(todolistId, id))
     }, [dispatch])
@@ -51,10 +60,14 @@ export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
         dispatch(addTodolistTC(title))
 
     }, [dispatch])
-//call thunks
-    useEffect(() => {
-        dispatch(fetchTodolistTC())
-    }, [])
+
+
+
+    if (!isLoggedIn){
+        return <Navigate to={"/login"}/>
+    }
+
+
     return <>
         <Grid container style={{padding: "20px 0px 20px 0px"}}>
             <AddItemForm AddItem={AddTodolistButtonProps}/>

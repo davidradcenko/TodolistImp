@@ -49,6 +49,10 @@ export const authAPI={
     login(data:LoginParamsType){
         const promise=instance.post<ResponseType<{userId?:number}>>('auth/login',data)
         return promise
+    },
+    me(){
+        const promise= instance.get<ResponseType<{id:number,email:string,login:number}>>('auth/me')
+        return promise
     }
 }
 

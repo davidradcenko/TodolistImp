@@ -8,7 +8,8 @@ import {updateTaskAC} from "../State/tasks-reducer";
 
 
 const initialState: InitialStateType = {
-    isLoginIn:false
+    isLoginIn:false,
+
 }
 
 
