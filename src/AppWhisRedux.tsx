@@ -34,6 +34,7 @@ function AppWhisRedux() {
     const dispatch = useAppDispatch()
     const isInitialized = useSelector<RootState, boolean>(state => state.app.initialized)
     const isLoginIn = useSelector<RootState, boolean>(state => state.login.isLoginIn)
+    const status = useSelector<RootState, string>(state => state.app.status)
 
     useEffect(()=>{
         dispatch(initializeAppTC())

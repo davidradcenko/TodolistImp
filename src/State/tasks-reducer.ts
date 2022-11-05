@@ -49,35 +49,7 @@ const initialState: TodoTasksType = {
             priority: TaskPriorities.Low,
             description: ''
         }
-    ],
-    [todolistId2]: [
-        {
-            id: uuidv4(),
-            title: "Frog4",
-            status: TaskStatuses.Completed,
-            todoListId: todolistId2,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriorities.Low,
-            description: ''
-        },
-        {
-            id: uuidv4(),
-            title: "Frog5",
-            status: TaskStatuses.Completed,
-            todoListId: todolistId2,
-            startDate: '',
-            deadline: '',
-            addedDate: '',
-            order: 0,
-            priority: TaskPriorities.Low,
-            description: ''
-        },
-
     ]
-
 }
 
 export const tasksRedusers = (state: TodoTasksType = initialState, action: ActionTypes): TodoTasksType => {
@@ -87,13 +59,11 @@ export const tasksRedusers = (state: TodoTasksType = initialState, action: Actio
             let todo = stateCopy[action.idTodo]
             let n = todo.filter(e => e.id != action.idTask)
             stateCopy[action.idTodo] = n
-
             return {...stateCopy}
         }
         case 'Add-Task': {
             const stateCopy = {...state}
             const newTask = action.task
-            // const newTask: TaskType = {id: v4(), title: action.title, status: TaskStatuses.New,addedDate:"",deadline:"",description:"",order:0,priority:TaskPriorities.Low,startDate:"",todoListId:action.idTodo}
             let T = stateCopy[newTask.todoListId]
             let newTodoTasks = [newTask, ...T]
             stateCopy[newTask.todoListId] = newTodoTasks
@@ -191,6 +161,7 @@ export const addTaskTC = (todolistId: string, title: string) => {
 }
 export const updateTaskStatusTC = (idTodo: string, domainmodel: updateDomainTaskModelType, idTask: string) => {
     return (dispatch: Dispatch<ActionTypes| SetAppErrorActionType | SetAppStatusActionType>, getState: () => RootState) => {
+
         const state = getState()
         const task = state.tasks[idTodo].find(t => t.id === idTask)
         if (!task) {
@@ -205,9 +176,11 @@ export const updateTaskStatusTC = (idTodo: string, domainmodel: updateDomainTask
             startDate: task.startDate,
             ...domainmodel
         }
+        dispatch(setAppStatusAC('loading'))
         TodolistAPI.updateTask(idTodo, idTask, apimodel).then(res => {
             if (res.data.resultCode===0) {
                 dispatch(updateTaskAC(idTodo, domainmodel, idTask))
+                dispatch(setAppStatusAC('succeeded'))
             }else {
                 handelServerAppError(res.data,dispatch)
             }

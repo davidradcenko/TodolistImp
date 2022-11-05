@@ -4,7 +4,7 @@ import {setIsLoginIn} from "../Login/login-reducer";
 
 const initialState:InitialStateType = {
     status: 'idle' ,
-    error: "null",
+    error: null,
     initialized:false
 }
 

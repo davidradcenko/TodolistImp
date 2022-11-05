@@ -22,7 +22,7 @@ type TodolistListPropsType = {}
 export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
     const dispatch = useAppDispatch()
 
-    const status = useSelector<RootState, string | null>(state => state.app.status)
+
     const isLoggedIn = useSelector<RootState, boolean>(state => state.login.isLoginIn)
     const TodolistData = useSelector<RootState, Array<TodolistDomainType>>(state => state.todolists)
     const tasksObj = useSelector<RootState, TodoTasksType>(state => state.tasks)
@@ -75,8 +75,8 @@ export const TodolistList: React.FC<TodolistListPropsType> = (props) => {
         <Grid container spacing={10}>
             {TodolistData.map((tl) => {
 
-                let filtrData = tasksObj[tl.id]
-                let taskfortodolist = filtrData
+                // get tasks
+                let taskfortodolist = tasksObj[tl.id]
 
                 return (
                     <Grid key={tl.id} item>

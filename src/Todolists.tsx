@@ -23,20 +23,22 @@ export  type PropsType = {
 }
 
 export const Todolists = React.memo(function (props: PropsType) {
-    console.log("Todolists is called")
     const dispatch=useAppDispatch()
 
-    const addTask = useCallback((title: string) => {
-        props.AddNewTodoTask(title, props.todolist.id)
-    }, [props.AddNewTodoTask, props.todolist.id])
-    const removeTodolist = () => {
-        props.DeleteTodo(props.todolist.id)
-    }
+    //todolist useCallback
     const ChegeTitleTodo = useCallback((Newtitle: string) => {
         props.ChengeTitleTodo(props.todolist.id, Newtitle)
     }, [props.todolist.id, props.ChengeTitleTodo])
+    const removeTodolist = () => {
+        props.DeleteTodo(props.todolist.id)
+    }
 
+    //tasks useCallback
+    const addTask = useCallback((title: string) => {
+        props.AddNewTodoTask(title, props.todolist.id)
+    }, [props.AddNewTodoTask, props.todolist.id])
 
+    //filter useCallback
     const FilterAll = useCallback(() => {
         props.FilterChenge("All", props.todolist.id)
     }, [])
