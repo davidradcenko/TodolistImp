@@ -20,21 +20,10 @@ export const todolistsRedusers = (state: Array<TodolistDomainType> = initialStat
             return [DomainTodo,...state]
         }
         case 'ChengeTitle-Todo': {
-            const stateCope = [...state]
-            let newT = stateCope.find(e => e.id == action.id)
-            if (newT) {
-                newT.title = action.title
-                debugger
-                // return [...stateCope,newT]
-            }
-            return stateCope
+            return state.map(tl=>tl.id===action.id ? {...tl,title:action.title} : tl)
         }
         case 'Change-Isdone-Todo': {
-            let newR = state.find(e => e.id == action.id)
-            if (newR) {
-                newR.filter = action.isDone
-            }
-            return [...state]
+            return state.map(tl=>tl.id===action.id ? {...tl,filter:action.isDone} : tl)
         }
         case 'SET-TODOLIST': {
             return action.todolist.map(tl => {

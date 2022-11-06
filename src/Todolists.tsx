@@ -49,9 +49,6 @@ export const Todolists = React.memo(function (props: PropsType) {
         props.FilterChenge("Active", props.todolist.id)
     }, [])
 
-    useEffect(()=>{
-        dispatch(fetchTasksTC(props.todolist.id))
-    },[])
 
 
     let TaskForTodolist = props.tasks
@@ -61,6 +58,13 @@ export const Todolists = React.memo(function (props: PropsType) {
     if (props.todolist.filter === "Active") {
         TaskForTodolist = props.tasks.filter(e => e.status == TaskStatuses.New)
     }
+
+    useEffect(()=>{
+        dispatch(fetchTasksTC(props.todolist.id))
+    },[])
+
+
+
 
     return (
         <div className={"todolist"}>
