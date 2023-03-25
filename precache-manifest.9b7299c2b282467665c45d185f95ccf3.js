@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "6627f23d63452992f14b",
+    "revision": "49ee7d53f67228e52c2b",
     "url": "/TodolistImp/static/css/main.528b4a15.chunk.css"
   },
   {
-    "revision": "6627f23d63452992f14b",
-    "url": "/TodolistImp/static/js/main.6627f23d.chunk.js"
+    "revision": "49ee7d53f67228e52c2b",
+    "url": "/TodolistImp/static/js/main.49ee7d53.chunk.js"
   },
   {
     "revision": "40266387d098bb4a1e17",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/TodolistImp/static/js/runtime~main.8e5e4efb.js"
   },
   {
-    "revision": "c2ea8866adace43e1222190c8eee0980",
+    "revision": "ce0a025a9a6bbe3993ab956051dbe80c",
     "url": "/TodolistImp/index.html"
   }
 ];
